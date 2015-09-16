@@ -308,6 +308,11 @@ namespace detail
 	{
 		return detail::get_format_info(Format).Flags & detail::CAP_COMPRESSED_BIT;
 	}
+	
+	inline bool is_compressed_s3tc(format Format)
+	{
+		return Format >= FORMAT_RGB_DXT1_UNORM && Format <= FORMAT_RGBA_DXT5_SRGB;
+	}
 
 	inline std::uint32_t block_size(format Format)
 	{
