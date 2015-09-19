@@ -90,9 +90,9 @@ struct dxt5_block {
 
 int main()
 {
-	static_assert(sizeof(dxt1_block) == 8, "");
-	static_assert(sizeof(dxt3_block) == 16, "");
-	static_assert(sizeof(dxt5_block) == 16, "");
+	static_assert(sizeof(dxt1_block) == 8, "DXT1 block size has to be 8.");
+	static_assert(sizeof(dxt3_block) == 16, "DXT3 block size has to be 16.");
+	static_assert(sizeof(dxt5_block) == 16, "DXT5 block size has to be 16.");
 	
 	int Error(0);
 
