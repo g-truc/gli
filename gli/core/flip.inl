@@ -46,40 +46,75 @@ namespace detail
 		}
 	}
 
-	inline void flip_block_s3tc(glm::byte* BlockDst, glm::byte* BlockSrc, format Format, bool HeightTwo)
+	struct dxt1_block
+	{
+		uint16_t Color0;
+		uint16_t Color1;
+		uint8_t Row0;
+		uint8_t Row1;
+		uint8_t Row2;
+		uint8_t Row3;
+	};
+
+	struct dxt3_block
+	{
+		uint16_t AlphaRow0;
+		uint16_t AlphaRow1;
+		uint16_t AlphaRow2;
+		uint16_t AlphaRow3;
+		uint16_t Color0;
+		uint16_t Color1;
+		uint8_t Row0;
+		uint8_t Row1;
+		uint8_t Row2;
+		uint8_t Row3;
+	};
+
+	struct dxt5_block
+	{
+		uint8_t Alpha0;
+		uint8_t Alpha1;
+		uint8_t AlphaR0;
+		uint8_t AlphaR1;
+		uint8_t AlphaR2;
+		uint8_t AlphaR3;
+		uint8_t AlphaR4;
+		uint8_t AlphaR5;
+		uint16_t Color0;
+		uint16_t Color1;
+		uint8_t Row0;
+		uint8_t Row1;
+		uint8_t Row2;
+		uint8_t Row3;
+	};
+	
+	inline void flip_block_s3tc(uint8_t* BlockDst, uint8_t* BlockSrc, format Format, bool HeightTwo)
 	{
 		// DXT1
 		if(Format == FORMAT_RGB_DXT1_UNORM || Format == FORMAT_RGB_DXT1_SRGB)
 		{
-			std::array<glm::byte, 8> BlockFlip;
+			dxt1_block* Src = reinterpret_cast<dxt1_block*>(BlockSrc);
+			dxt1_block* Dst = reinterpret_cast<dxt1_block*>(BlockDst);
 	
-			// 0, 1 color1
-			// 2, 3 color2
-			// 4, 5, 6, 7 color rows
 			if(HeightTwo)
 			{
-				BlockFlip[0] = BlockSrc[0];
-				BlockFlip[1] = BlockSrc[1];
-				BlockFlip[2] = BlockSrc[2];
-				BlockFlip[3] = BlockSrc[3];
-				BlockFlip[4] = BlockSrc[5];
-				BlockFlip[5] = BlockSrc[4];
-				BlockFlip[6] = BlockFlip[7] = 0;
+				Dst->Color0 = Src->Color0;
+				Dst->Color1 = Src->Color1;
+				Dst->Row0 = Src->Row1;
+				Dst->Row1 = Src->Row0;
+				Dst->Row2 = Src->Row2;
+				Dst->Row3 = Src->Row3;
 				
-				memcpy(BlockDst, BlockFlip.data(), 8);
 				return;
 			}
 
-			BlockFlip[0] = BlockSrc[0];
-			BlockFlip[1] = BlockSrc[1];
-			BlockFlip[2] = BlockSrc[2];
-			BlockFlip[3] = BlockSrc[3];
-			BlockFlip[4] = BlockSrc[7];
-			BlockFlip[5] = BlockSrc[6];
-			BlockFlip[6] = BlockSrc[5];
-			BlockFlip[7] = BlockSrc[4];
-			
-			memcpy(BlockDst, BlockFlip.data(), 8);
+			Dst->Color0 = Src->Color0;
+			Dst->Color1 = Src->Color1;
+			Dst->Row0 = Src->Row3;
+			Dst->Row1 = Src->Row2;
+			Dst->Row2 = Src->Row1;
+			Dst->Row3 = Src->Row0;
+				
 			return;
 		}
 
@@ -93,125 +128,82 @@ namespace detail
 		// DXT3
 		if(Format == FORMAT_RGBA_DXT3_UNORM || Format == FORMAT_RGBA_DXT3_SRGB)
 		{
-			std::array<glm::byte, 16> BlockFlip;
+			dxt3_block* Src = reinterpret_cast<dxt3_block*>(BlockSrc);
+			dxt3_block* Dst = reinterpret_cast<dxt3_block*>(BlockDst);
 
-			// 0 - 7 alpha pixels (two bytes per row)
-			// 8, 9 color1
-			// 10, 11 color2
-			// 12, 13, 14, 15 pixel rows
 			if(HeightTwo)
 			{
-				// flip alpha
-				BlockFlip[0] = BlockSrc[2];
-				BlockFlip[1] = BlockSrc[3];
-				BlockFlip[2] = BlockSrc[0];
-				BlockFlip[3] = BlockSrc[1];
-				BlockFlip[4] = BlockFlip[5] = BlockFlip[6] = BlockFlip[7] = 0;
+				Dst->AlphaRow0 = Src->AlphaRow1;
+				Dst->AlphaRow1 = Src->AlphaRow0;
+				Dst->AlphaRow2 = Src->AlphaRow2;
+				Dst->AlphaRow3 = Src->AlphaRow3;
+				Dst->Color0 = Src->Color0;
+				Dst->Color1 = Src->Color1;
+				Dst->Row0 = Src->Row1;
+				Dst->Row1 = Src->Row0;
+				Dst->Row2 = Src->Row2;
+				Dst->Row3 = Src->Row3;
 
-				// save color
-				BlockFlip[8] = BlockSrc[8];
-				BlockFlip[9] = BlockSrc[9];
-				BlockFlip[10] = BlockSrc[10];
-				BlockFlip[11] = BlockSrc[11];
-
-				// flip color
-				BlockFlip[12] = BlockSrc[13];
-				BlockFlip[13] = BlockSrc[12];
-				BlockFlip[14] = BlockFlip[15] = 0;
-			
-				memcpy(BlockDst, BlockFlip.data(), 16);
 				return;
 			}
 
-			// flip alpha
-			BlockFlip[0] = BlockSrc[6];
-			BlockFlip[1] = BlockSrc[7];
-			BlockFlip[2] = BlockSrc[4];
-			BlockFlip[3] = BlockSrc[5];
-			BlockFlip[4] = BlockSrc[2];
-			BlockFlip[5] = BlockSrc[3];
-			BlockFlip[6] = BlockSrc[0];
-			BlockFlip[7] = BlockSrc[1];
-
-			// save color
-			BlockFlip[8] = BlockSrc[8];
-			BlockFlip[9] = BlockSrc[9];
-			BlockFlip[10] = BlockSrc[10];
-			BlockFlip[11] = BlockSrc[11];
-
-			// flip color
-			BlockFlip[12] = BlockSrc[15];
-			BlockFlip[13] = BlockSrc[14];
-			BlockFlip[14] = BlockSrc[13];
-			BlockFlip[15] = BlockSrc[12];
-			
-			memcpy(BlockDst, BlockFlip.data(), 16);
+			Dst->AlphaRow0 = Src->AlphaRow3;
+			Dst->AlphaRow1 = Src->AlphaRow2;
+			Dst->AlphaRow2 = Src->AlphaRow1;
+			Dst->AlphaRow3 = Src->AlphaRow0;
+			Dst->Color0 = Src->Color0;
+			Dst->Color1 = Src->Color1;
+			Dst->Row0 = Src->Row3;
+			Dst->Row1 = Src->Row2;
+			Dst->Row2 = Src->Row1;
+			Dst->Row3 = Src->Row0;
+				
 			return;
 		}
 
 		// DXT5
 		if(Format == FORMAT_RGBA_DXT5_UNORM || Format == FORMAT_RGBA_DXT5_SRGB)
 		{
-			std::array<glm::byte, 16> BlockFlip;
+			dxt5_block* Src = reinterpret_cast<dxt5_block*>(BlockSrc);
+			dxt5_block* Dst = reinterpret_cast<dxt5_block*>(BlockDst);
 
-			// 0 alpha1
-			// 1 alpha2
-			// 2, 3, 4, 5, 6, 7 alpha data (3 bits per pixel)
-			// 8, 9 color1
-			// 10, 11 color2
-			// 12, 13, 14, 15 pixel rows
 			if(HeightTwo)
 			{
-				// save alpha
-				BlockFlip[0] = BlockSrc[0];
-				BlockFlip[1] = BlockSrc[1];
-
-				// flip alpha
-				BlockFlip[2] = (BlockSrc[3] & 0b11110000) >> 4 + (BlockSrc[4] & 0b1111) << 4;
-				BlockFlip[3] = (BlockSrc[4] & 0b11110000) >> 4 + (BlockSrc[2] & 0b1111) << 4;
-				BlockFlip[4] = (BlockSrc[2] & 0b11110000) >> 4 + (BlockSrc[3] & 0b1111) << 4;
-				BlockFlip[5] = BlockFlip[6] = BlockFlip[7] = 0;
-
-				// save color
-				BlockFlip[8] = BlockSrc[8];
-				BlockFlip[9] = BlockSrc[9];
-				BlockFlip[10] = BlockSrc[10];
-				BlockFlip[11] = BlockSrc[11];
-
-				// flip color
-				BlockFlip[12] = BlockSrc[13];
-				BlockFlip[13] = BlockSrc[12];
-				BlockFlip[14] = BlockFlip[15] = 0;
+				Dst->Alpha0 = Src->Alpha0;
+				Dst->Alpha1 = Src->Alpha1;
+				// operator+ has precedence over operator>> and operator<<, hence the parentheses. very important!
+				Dst->AlphaR0 = ((Src->AlphaR1 & 0b11110000) >> 4) + ((Src->AlphaR2 & 0b1111) << 4);
+				Dst->AlphaR1 = ((Src->AlphaR2 & 0b11110000) >> 4) + ((Src->AlphaR0 & 0b1111) << 4);
+				Dst->AlphaR2 = ((Src->AlphaR0 & 0b11110000) >> 4) + ((Src->AlphaR1 & 0b1111) << 4);
+				Dst->AlphaR3 = Src->AlphaR3;
+				Dst->AlphaR4 = Src->AlphaR4;
+				Dst->AlphaR5 = Src->AlphaR5;
+				Dst->Color0 = Src->Color0;
+				Dst->Color1 = Src->Color1;
+				Dst->Row0 = Src->Row1;
+				Dst->Row1 = Src->Row0;
+				Dst->Row2 = Src->Row2;
+				Dst->Row3 = Src->Row3;
 			
-				memcpy(BlockDst, BlockFlip.data(), 16);
 				return;
 			}
 
-			// save alpha
-			BlockFlip[0] = BlockSrc[0];
-			BlockFlip[1] = BlockSrc[1];
-
-			// flip alpha
-			BlockFlip[2] = (BlockSrc[6] & 0b11110000) >> 4 + (BlockSrc[7] & 0b1111) << 4;
-			BlockFlip[3] = (BlockSrc[7] & 0b11110000) >> 4 + (BlockSrc[5] & 0b1111) << 4;
-			BlockFlip[4] = (BlockSrc[5] & 0b11110000) >> 4 + (BlockSrc[6] & 0b1111) << 4;
-			BlockFlip[5] = (BlockSrc[3] & 0b11110000) >> 4 + (BlockSrc[4] & 0b1111) << 4;
-			BlockFlip[6] = (BlockSrc[4] & 0b11110000) >> 4 + (BlockSrc[2] & 0b1111) << 4;
-			BlockFlip[7] = (BlockSrc[2] & 0b11110000) >> 4 + (BlockSrc[3] & 0b1111) << 4;
-
-			// save color
-			BlockFlip[8] = BlockSrc[8];
-			BlockFlip[9] = BlockSrc[9];
-			BlockFlip[10] = BlockSrc[10];
-			BlockFlip[11] = BlockSrc[11];
-
-			// flip color
-			BlockFlip[12] = BlockSrc[15];
-			BlockFlip[13] = BlockSrc[14];
-			BlockFlip[14] = BlockSrc[13];
-			BlockFlip[15] = BlockSrc[12];
-
-			memcpy(BlockDst, BlockFlip.data(), 16);
+			Dst->Alpha0 = Src->Alpha0;
+			Dst->Alpha1 = Src->Alpha1;
+			// operator+ has precedence over operator>> and operator<<, hence the parentheses. very important!
+			Dst->AlphaR0 = ((Src->AlphaR4 & 0b11110000) >> 4) + ((Src->AlphaR5 & 0b1111) << 4);
+			Dst->AlphaR1 = ((Src->AlphaR5 & 0b11110000) >> 4) + ((Src->AlphaR3 & 0b1111) << 4);
+			Dst->AlphaR2 = ((Src->AlphaR3 & 0b11110000) >> 4) + ((Src->AlphaR4 & 0b1111) << 4);
+			Dst->AlphaR3 = ((Src->AlphaR1 & 0b11110000) >> 4) + ((Src->AlphaR2 & 0b1111) << 4);
+			Dst->AlphaR4 = ((Src->AlphaR2 & 0b11110000) >> 4) + ((Src->AlphaR0 & 0b1111) << 4);
+			Dst->AlphaR5 = ((Src->AlphaR0 & 0b11110000) >> 4) + ((Src->AlphaR1 & 0b1111) << 4);
+			Dst->Color0 = Src->Color0;
+			Dst->Color1 = Src->Color1;
+			Dst->Row0 = Src->Row3;
+			Dst->Row1 = Src->Row2;
+			Dst->Row2 = Src->Row1;
+			Dst->Row3 = Src->Row0;
+			
 			return;
 		}
 		
@@ -230,11 +222,10 @@ namespace detail
 		}
 
 		std::size_t const XBlocks = ImageSrc.dimensions().x <= 4 ? 1 : ImageSrc.dimensions().x / 4;
-
 		if(ImageSrc.dimensions().y == 2)
 		{
 			for(std::size_t i_block = 0; i_block < XBlocks; ++i_block)
-				flip_block_s3tc(ImageDst.data<glm::byte>() + i_block * block_size(Format), ImageSrc.data<glm::byte>() + i_block * block_size(Format), Format, true);
+				flip_block_s3tc(ImageDst.data<uint8_t>() + i_block * block_size(Format), ImageSrc.data<uint8_t>() + i_block * block_size(Format), Format, true);
 			
 			return;
 		}
@@ -242,7 +233,7 @@ namespace detail
 		std::size_t const MaxYBlock = ImageSrc.dimensions().y / 4 - 1;
 		for(std::size_t i_row = 0; i_row <= MaxYBlock; ++i_row)
 			for(std::size_t i_block = 0; i_block < XBlocks; ++i_block)
-				flip_block_s3tc(ImageDst.data<glm::byte>() + (MaxYBlock - i_row) * block_size(Format) * XBlocks + i_block * block_size(Format), ImageSrc.data<glm::byte>() + i_row * block_size(Format) * XBlocks + i_block * block_size(Format), Format, false);
+				flip_block_s3tc(ImageDst.data<uint8_t>() + (MaxYBlock - i_row) * block_size(Format) * XBlocks + i_block * block_size(Format), ImageSrc.data<uint8_t>() + i_row * block_size(Format) * XBlocks + i_block * block_size(Format), Format, false);
 	}
 }//namespace detail
 
