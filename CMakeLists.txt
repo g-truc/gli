@@ -53,3 +53,37 @@ include_directories(${CMAKE_CURRENT_SOURCE_DIR}/external/${GLM_DIRECTORY})
 add_subdirectory(gli)
 add_subdirectory(test)
 #add_subdirectory(doc)
+
+set(GLI_INSTALL_CONFIGDIR "${CMAKE_INSTALL_LIBDIR}/cmake/gli")
+install(DIRECTORY gli DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
+
+write_basic_package_version_file(
+    "${CMAKE_CURRENT_BINARY_DIR}/gliVersion.cmake"
+    VERSION ${GLI_VERSION}
+    COMPATIBILITY AnyNewerVersion
+)
+
+# build tree package config
+configure_file(
+    cmake/gliBuildConfig.cmake.in
+    gliConfig.cmake
+    @ONLY
+)
+
+# install tree package config
+configure_package_config_file(
+    cmake/gliConfig.cmake.in
+    ${GLI_INSTALL_CONFIGDIR}/gliConfig.cmake
+    INSTALL_DESTINATION ${GLI_INSTALL_CONFIGDIR}
+    PATH_VARS CMAKE_INSTALL_INCLUDEDIR
+    NO_CHECK_REQUIRED_COMPONENTS_MACRO
+)
+
+install(
+    FILES
+        "${CMAKE_CURRENT_BINARY_DIR}/${GLI_INSTALL_CONFIGDIR}/gliConfig.cmake"
+        "${CMAKE_CURRENT_BINARY_DIR}/gliVersion.cmake"
+    DESTINATION ${GLI_INSTALL_CONFIGDIR}
+)
+
+export(PACKAGE gli)
