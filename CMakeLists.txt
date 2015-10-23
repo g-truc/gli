@@ -2,6 +2,12 @@ cmake_minimum_required(VERSION 2.6 FATAL_ERROR)
 cmake_policy(VERSION 2.6)
 
 project(gli)
+set(GLI_VERSION "0.8.0.0")
+list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
+
+include(GNUInstallDirs)
+include(CMakePackageConfigHelpers)
+
 enable_testing()
 
 add_definitions(-D_CRT_SECURE_NO_WARNINGS)
