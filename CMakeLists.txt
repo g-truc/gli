@@ -8,6 +8,11 @@ add_definitions(-D_CRT_SECURE_NO_WARNINGS)
 add_definitions(-DSOURCE_DIR="${CMAKE_CURRENT_SOURCE_DIR}")
 include_directories(".")
 
+option(GLI_TEST_ENABLE "GLI test" OFF)
+if(NOT GLI_TEST_ENABLE)
+    message(STATUS "GLI is a header only library, no need to build it. Set the option GLI_TEST_ENABLE with ON to build and run the test bench")
+endif()
+
 if(MSVC)
 	add_definitions(/Za)
 endif()
