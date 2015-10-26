@@ -17,6 +17,8 @@ This library works perfectly with *[OpenGL](https://www.opengl.org)* but it also
 For more information about *GLI*, please have a look at the [API reference documentation](http://gli.g-truc.net/0.7.0/api/index.html).
 The source code and the documentation are licensed under the [Happy Bunny License (Modified MIT) or the MIT License](./copying.txt).
 
+To clone *GLI* and its dependency [*GLM*](http://glm.g-truc.net/) (which is included as a submodule), please clone this repo with `git clone --recursive`.  To update your clone's copy of *GLM*, run the command `git submodule foreach git pull origin master`.
+
 Thanks for contributing to the project by <link href="https://github.com/g-truc/gli/issues">submitting issues</link> for bug reports and feature requests. Any feedback is welcome at <link href="mailto://gli@g-truc.net">gli@g-truc.net</link>.
 
 ```c++
