@@ -90,8 +90,11 @@ namespace detail
 	
 	inline void flip_block_s3tc(uint8_t* BlockDst, uint8_t* BlockSrc, format Format, bool HeightTwo)
 	{
-		// DXT1
-		if(Format == FORMAT_RGB_DXT1_UNORM || Format == FORMAT_RGB_DXT1_SRGB)
+		// All DXT-compressed textures are stored as RGBA, the RGB format is used only to tell OpenGL
+		// how to interpret the data. It does not, however, matter for how the data is laid out,
+		// so it can be flipped the same way.
+		if(Format == FORMAT_RGB_DXT1_UNORM || Format == FORMAT_RGB_DXT1_SRGB
+		|| Format == FORMAT_RGBA_DXT1_UNORM || Format == FORMAT_RGBA_DXT1_SRGB)
 		{
 			dxt1_block* Src = reinterpret_cast<dxt1_block*>(BlockSrc);
 			dxt1_block* Dst = reinterpret_cast<dxt1_block*>(BlockDst);
@@ -116,13 +119,6 @@ namespace detail
 			Dst->Row3 = Src->Row0;
 				
 			return;
-		}
-
-		// DXT1 w/ alpha
-		if(Format == FORMAT_RGBA_DXT1_UNORM || Format == FORMAT_RGBA_DXT1_SRGB)
-		{
-			// ?? can't find any spec for how a DXT1 texture with alpha is laid out
-			assert(false);
 		}
 
 		// DXT3
