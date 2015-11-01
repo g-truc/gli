@@ -90,9 +90,12 @@ namespace detail
 	
 	inline void flip_block_s3tc(uint8_t* BlockDst, uint8_t* BlockSrc, format Format, bool HeightTwo)
 	{
-		// All DXT-compressed textures are stored as RGBA, the RGB format is used only to tell OpenGL
-		// how to interpret the data. It does not, however, matter for how the data is laid out,
-		// so it can be flipped the same way.
+		// There is no distinction between RGB and RGBA in DXT-compressed textures,
+		// it is used only to tell OpenGL how to interpret the data.
+		// Moreover, in DXT1 (which does not contain an alpha channel), transparency can be emulated
+		// using Color0 and Color1 on a per-compression-block basis.
+		// There is no difference in how textures with and without transparency are laid out in the file,
+		// so they can be flipped using the same method.
 		if(Format == FORMAT_RGB_DXT1_UNORM || Format == FORMAT_RGB_DXT1_SRGB
 		|| Format == FORMAT_RGBA_DXT1_UNORM || Format == FORMAT_RGBA_DXT1_SRGB)
 		{

@@ -120,6 +120,10 @@ int main()
 		dxt1_block{63712u, 255u, 228u, 144u, 64u, 0u}, dxt1_block{2516u, 215u, 152u, 173u, 215u, 106u});
 		
 	Error += test_texture(
+		gli::texture2D(gli::FORMAT_RGBA_DXT1_UNORM, TextureSize, Levels),
+		dxt1_block{63712u, 255u, 228u, 144u, 64u, 0u}, dxt1_block{255u, 63712u, 255u, 255u, 255u, 255u});
+
+	Error += test_texture(
 		gli::texture2D(gli::FORMAT_RGBA_DXT3_UNORM, TextureSize, Levels),
 		dxt3_block{12514u, 1512u, 12624u, 16614u, 63712u, 255u, 228u, 144u, 64u, 0u}, dxt3_block{36125u, 2416u, 46314u, 10515u, 2516u, 215u, 152u, 173u, 215u, 106u});
 		
