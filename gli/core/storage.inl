@@ -15,7 +15,7 @@ namespace gli
 		, Faces(Faces)
 		, Levels(Levels)
 		, BlockSize(gli::block_size(Format))
-		, BlockCount(glm::max(Dimensions / gli::block_dimensions(Format), texelcoord_type(1)))
+		, BlockCount(glm::max(texelcoord_type(glm::ceil(glm::vec3(Dimensions) / glm::vec3(gli::block_dimensions(Format)))), texelcoord_type(1)))
 		, BlockDimensions(gli::block_dimensions(Format))
 		, Dimensions(Dimensions)
 	{
@@ -61,7 +61,7 @@ namespace gli
 	{
 		GLI_ASSERT(Level >= 0 && Level < this->Levels);
 
-		return glm::max(this->BlockCount >> storage::texelcoord_type(static_cast<storage::texelcoord_type::value_type>(Level)), storage::texelcoord_type(1));
+		return glm::max(texelcoord_type(glm::ceil(glm::vec3(dimensions(Level)) / glm::vec3(block_dimensions()))), texelcoord_type(1));
 	}
 
 	inline storage::texelcoord_type storage::dimensions(size_type Level) const
