@@ -264,17 +264,15 @@ GLuint create_texture(char const* Filename)
 			if(gli::is_compressed(Texture.format()))
 				glCompressedTexSubImage3D(
 					Target, static_cast<GLint>(Level),
-					0, 0, 0,
-					Extent.x, Extent.y,
-					Texture.target() == gli::TARGET_3D ? Extent.z : LayerGL,
+					0, 0, LayerGL,
+					Extent.x, Extent.y, Extent.z,
 					Format.Internal, static_cast<GLsizei>(Texture.size(Level)),
 					Texture.data(Layer, Face, Level));
 			else
 				glTexSubImage3D(
 					Target, static_cast<GLint>(Level),
-					0, 0, 0,
-					Extent.x, Extent.y,
-					Texture.target() == gli::TARGET_3D ? Extent.z : LayerGL,
+					0, 0, LayerGL,
+					Extent.x, Extent.y, Extent.z,
 					Format.External, Format.Type,
 					Texture.data(Layer, Face, Level));
 			break;
