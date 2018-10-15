@@ -33,7 +33,7 @@ bool convert_rgb32f_rgb9e5(const char* FilenameSrc, const char* FilenameDst)
 {
 	if(FilenameDst == NULL)
 		return false;
-	if(std::strstr(FilenameDst, ".dds") > 0 || std::strstr(FilenameDst, ".ktx") > 0)
+	if(std::strstr(FilenameDst, ".dds") > static_cast<void*>(0) || std::strstr(FilenameDst, ".ktx") > static_cast<void*>(0))
 		return false;
 
 	gli::texture2d TextureSource(gli::load(FilenameSrc));
