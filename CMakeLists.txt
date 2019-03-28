@@ -105,7 +105,7 @@ configure_package_config_file(
 
 install(
 	FILES
-		"${CMAKE_CURRENT_BINARY_DIR}/${GLI_INSTALL_CONFIGDIR}/gliConfig.cmake"
+		"${CMAKE_CURRENT_BINARY_DIR}/gliConfig.cmake"
 		"${CMAKE_CURRENT_BINARY_DIR}/gliVersion.cmake"
 	DESTINATION ${GLI_INSTALL_CONFIGDIR}
 )
