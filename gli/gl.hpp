@@ -358,9 +358,9 @@ namespace gli
 			unsigned int Properties;
 		};
 
-		bool has_swizzle(profile Profile) const
+		bool has_swizzle(profile _Profile) const
 		{
-			return Profile == PROFILE_ES30 || Profile == PROFILE_GL33;
+			return _Profile == PROFILE_ES30 || _Profile == PROFILE_GL33;
 		}
 
 		gl::swizzles compute_swizzle(format_desc const& FormatDesc, gli::swizzles const& Swizzle) const;
