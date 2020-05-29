@@ -1,5 +1,111 @@
+# Created by https://www.gitignore.io/api/c,c++,eclipse,visualstudiocode
+# Edit at https://www.gitignore.io/?templates=c,c++,eclipse,visualstudiocode
+# Adjusted by Andy Mender <andymenderunix@gmail.com>
+
+### Cmake ###
+
+# build artifacts
 build/
 
-*~
+### C ###
+# Prerequisites
+*.d
+
+# Object files
+*.o
+*.ko
+*.obj
+*.elf
+
+# Linker output
+*.ilk
+*.map
+*.exp
+
+# Libraries
+*.lib
+*.a
+*.la
+*.lo
+
+# Shared objects (inc. Windows DLLs)
+*.dll
+*.so
+*.so.*
+*.dylib
+
+# Executables
+*.exe
+*.out
+*.app
+*.i*86
+*.x86_64
+*.hex
+
+# Debug files
+*.dSYM/
+*.su
+*.idb
+*.pdb
+
+### C++ ###
+# Prerequisites
+
+# Compiled Object files
+*.slo
+
+# Compiled Static libraries
+*.lai
+
+### Eclipse ###
+.metadata
+bin/
+tmp/
+*.tmp
+*.bak
 *.swp
-*.swo
+*~.nib
+local.properties
+.settings/
+.loadpath
+.recommenders
+
+# External tool builders
+.externalToolBuilders/
+
+# Locally stored "Eclipse launch configurations"
+*.launch
+
+# PyDev specific (Python IDE for Eclipse)
+*.pydevproject
+
+# CDT-specific (C/C++ Development Tooling)
+.cproject
+
+# CDT- autotools
+.autotools
+
+# sbteclipse plugin
+.target
+
+# Tern plugin
+.tern-project
+
+# Code Recommenders
+.recommenders/
+
+# Annotation Processing
+.apt_generated/
+
+# Eclipse Core
+.project
+
+### VisualStudioCode ###
+
+# VisualStudioCode Core
+.vscode/
+
+# Ignore all local history of files
+.history
+
+# End of https://www.gitignore.io/api/c,c++,eclipse,visualstudiocode
