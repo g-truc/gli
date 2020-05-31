@@ -37,7 +37,7 @@ namespace generate_mipmaps
 		gli::texture1d TextureView(gli::view(Texture, 0, 0));
 		gli::fsampler1D SamplerA(gli::texture1d(gli::duplicate(Texture)), gli::WRAP_CLAMP_TO_EDGE);
 
-		// generate mipmaps via linear filtering and get
+		// generate mipmaps via filtering and get
 		SamplerA.generate_mipmaps(Filter);
 		gli::texture1d MipmapsA = SamplerA();
 
@@ -47,7 +47,7 @@ namespace generate_mipmaps
 		Error += (TopTexelA == TargetColor) ? 0 : 1;
 
 		// if texture has multiple mipmap levels, texel from top level can't match texel from original texture
-		if(Texture.levels() > 1)
+		if (Texture.levels() > 1)
 			Error += (TopTexelA != TopTexel) ? 0 : 1;
 
 		// create mipmaps view (should match texture view)
@@ -63,7 +63,7 @@ namespace generate_mipmaps
 		Error += (TopTexelB == TargetColor) ? 0 : 1;
 
 		// if texture has multiple levels, texel from top level can't match texel from original texture
-		if(Texture.levels() > 1)
+		if (Texture.levels() > 1)
 			Error += (TopTexelB != TopTexel) ? 0 : 1;
 
 		// create mipmaps view and match against texture view
