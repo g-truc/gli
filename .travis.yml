@@ -48,7 +48,7 @@ before_script:
 script:
 - mkdir ./build
 - cd ./build
-- cmake -S .. -B .
+- cmake ..
 - cmake --build .
 - ctest
 - cd ..
