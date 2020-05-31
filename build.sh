@@ -1,5 +1,8 @@
 #!/bin/bash
 
+export CC=gcc
+export CXX=g++
+
 # make clean build dir
 [ -d build ] && rm -r build && mkdir build
 
@@ -10,5 +13,5 @@ cmake -S . -B build
 cmake --build build -j4 -v
 
 # run tests
-cd build && make test
+cd build && ctest
 cd ../
