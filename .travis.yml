@@ -42,8 +42,8 @@ jobs:
 
 before_script: 
 - cmake --version
-- echo "C compiler: $CC"
-- echo "C++ compiler: $CXX"
+- $CC --version
+- $CXX --version
 
 script:
 - mkdir ./build
