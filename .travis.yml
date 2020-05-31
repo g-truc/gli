@@ -1,37 +1,73 @@
-dist: trusty
-
+dist: bionic
 language: cpp
 
-matrix:
-  include:
-    - compiler: gcc
-      addons:
-        apt:
-          sources:
-            - ubuntu-toolchain-r-test
-          packages:
-            - g++-4.9
-      env: COMPILER=g++-4.9
-    - compiler: clang
-      addons:
-        apt:
-          sources:
-            - ubuntu-toolchain-r-test
-            - llvm-toolchain-precise-3.8
-          packages:
-            - clang-3.8
-      env: COMPILER=clang++-3.8
+branches:
+  only:
+    - master
+    - development
 
 compiler:
-  - clang
+  - clang   # clang 7
+  - clang-9
+  - gcc     # gcc 7.4
+  - gcc-9
+  - gcc-10
+
+jobs:
+  include:
+    - compiler: clang
+    - name: "Build with LLVM/Clang 7"
+      env: 
+        - MATRIX_EVAL="CC=clang CXX=clang++"
+
+    - compiler: clang-9
+    - name: "Build with LLVM/Clang 9"
+      addons:
+        apt:
+          packages:
+            - clang-9
+      env: 
+        - MATRIX_EVAL="CC=clang-9 CXX=clang++-9"
+
+    - compiler: gcc
+    - name: "Build with GCC 7.4"
+      env: 
+        - MATRIX_EVAL="CC=gcc CXX=g++"
+
+    - compiler: gcc-9
+    - name: "Build with GCC 9"
+      addons:
+        apt:
+          sources:
+            - ubuntu-toolchain-r-test
+          packages:
+            - gcc-9
+            - g++-9
+      env: 
+        - MATRIX_EVAL="CC=gcc-9 CXX=g++-9"
+
+    - compiler: gcc-10
+    - name: "Build with GCC 10"
+      addons:
+        apt:
+          sources:
+            - ubuntu-toolchain-r-test
+          packages:
+            - gcc-10
+            - g++-10
+      env: 
+        - MATRIX_EVAL="CC=gcc-10 CXX=g++-10"
 
 before_script: 
 - cmake --version
+- eval "${MATRIX_EVAL}"
+- $CC --version
+- $CXX --version
 
 script:
 - mkdir ./build
 - cd ./build
-- cmake -DCMAKE_CXX_COMPILER=$COMPILER ..
+- cmake ..
 - cmake --build .
 - ctest
 - cd ..
