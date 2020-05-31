@@ -60,7 +60,7 @@ GLuint CreateTexture(char const* Filename)
 | Service | System | Compiler | Status |
 | ------- | ------ | -------- | ------ |
 | [Drone](https://drone.io/github.com/g-truc/gli) | Linux 64 bits | GCC 4.6.3 | [![Build Status](https://drone.io/github.com/g-truc/gli/status.png)](https://drone.io/github.com/g-truc/gli/latest) |
-| [Travis CI](https://travis-ci.org/AndyMender/gli)| Linux 64 bits | Clang 7.0, Clang 9.0, GCC 7.4, GCC 9.0 | [![Travis CI](https://travis-ci.com/AndyMender/gli.svg?branch=development)](https://travis-ci.com/AndyMender/gli)
+| [Travis CI](https://travis-ci.org/AndyMender/gli)| Linux 64 bits | Clang 7.0, Clang 9.0, GCC 7.4, GCC 9, GCC 10 | [![Travis CI](https://travis-ci.com/AndyMender/gli.svg?branch=development)](https://travis-ci.com/AndyMender/gli)
 | [AppVeyor](https://ci.appveyor.com/project/Groovounet/gli)| Windows 32 and 64 | Visual Studio 2013 | [![AppVeyor](https://ci.appveyor.com/api/projects/status/32r7s2skrgm9ubva?svg=true)](https://ci.appveyor.com/project/Groovounet/gli)
 
 ## Release notes

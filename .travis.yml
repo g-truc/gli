@@ -11,6 +11,7 @@ compiler:
   - clang-9
   - gcc     # gcc 7.4
   - gcc-9
+  - gcc-10
 
 jobs:
   include:
@@ -44,6 +45,18 @@ jobs:
             - g++-9
       env: 
         - MATRIX_EVAL="CC=gcc-9 CXX=g++-9"
+
+    - name: "Build with GCC 10"
+      compiler: gcc-10
+      addons:
+        apt:
+          sources:
+            - ubuntu-toolchain-r-test
+          packages:
+            - gcc-10
+            - g++-10
+      env: 
+        - MATRIX_EVAL="CC=gcc-10 CXX=g++-10"
 
 before_script: 
 - cmake --version
