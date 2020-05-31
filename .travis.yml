@@ -1,37 +1,54 @@
-dist: trusty
-
+dist: bionic
 language: cpp
 
-matrix:
-  include:
-    - compiler: gcc
-      addons:
-        apt:
-          sources:
-            - ubuntu-toolchain-r-test
-          packages:
-            - g++-4.9
-      env: COMPILER=g++-4.9
-    - compiler: clang
-      addons:
-        apt:
-          sources:
-            - ubuntu-toolchain-r-test
-            - llvm-toolchain-precise-3.8
-          packages:
-            - clang-3.8
-      env: COMPILER=clang++-3.8
+branches:
+  only:
+    - master
+    - development
 
 compiler:
-  - clang
+  - clang   # clang 7
+  - clang-9
+  - gcc     # gcc 7.4
+  - gcc-9
+
+jobs:
+  include:
+    - name: "Build with LLVM/Clang 7"
+    - compiler: clang
+      env: CC=clang CXX=clang++
+
+    - name: "Build with LLVM/Clang 9"
+    - compiler: clang-9
+      addons:
+        apt:
+          packages:
+            - clang-9
+      env: CC=clang-9 CXX=clang++-9
+
+    - name: "Build with GCC 7.4"
+    - compiler: gcc
+      env: CC=gcc CXX=g++
+
+    - name: "Build with GCC 9"
+      compiler: gcc-9
+      addons:
+        apt:
+          sources:
+            - ubuntu-toolchain-r-test
+          packages:
+            - gcc-9
+      env: CC=gcc-9 CXX=g++9
 
 before_script: 
 - cmake --version
+- echo "C compiler: $CC"
+- echo "C++ compiler: $CXX"
 
 script:
 - mkdir ./build
 - cd ./build
-- cmake -DCMAKE_CXX_COMPILER=$COMPILER ..
+- cmake -S .. -B .
 - cmake --build .
 - ctest
 - cd ..
