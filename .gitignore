@@ -108,4 +108,7 @@ local.properties
 # Ignore all local history of files
 .history
 
+# Ignore log files
+*.log
+
 # End of https://www.gitignore.io/api/c,c++,eclipse,visualstudiocode
