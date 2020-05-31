@@ -41,6 +41,7 @@ jobs:
             - ubuntu-toolchain-r-test
           packages:
             - gcc-9
+            - g++-9
       env: 
         - MATRIX_EVAL="CC=gcc-9 CXX=g++-9"
 
