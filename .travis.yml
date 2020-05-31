@@ -16,7 +16,8 @@ jobs:
   include:
     - name: "Build with LLVM/Clang 7"
     - compiler: clang
-      env: CC=clang CXX=clang++
+      env: 
+        - MATRIX_EVAL="CC=clang CXX=clang++"
 
     - name: "Build with LLVM/Clang 9"
     - compiler: clang-9
@@ -24,11 +25,13 @@ jobs:
         apt:
           packages:
             - clang-9
-      env: CC=clang-9 CXX=clang++-9
+      env: 
+        - MATRIX_EVAL="CC=clang-9 CXX=clang++-9"
 
     - name: "Build with GCC 7.4"
     - compiler: gcc
-      env: CC=gcc CXX=g++
+      env: 
+        - MATRIX_EVAL="CC=gcc CXX=g++"
 
     - name: "Build with GCC 9"
       compiler: gcc-9
@@ -38,10 +41,12 @@ jobs:
             - ubuntu-toolchain-r-test
           packages:
             - gcc-9
-      env: CC=gcc-9 CXX=g++9
+      env: 
+        - MATRIX_EVAL="CC=gcc-9 CXX=g++-9"
 
 before_script: 
 - cmake --version
+- eval "${MATRIX_EVAL}"
 - $CC --version
 - $CXX --version
 
