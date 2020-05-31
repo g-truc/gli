@@ -21,13 +21,13 @@ namespace generate_mipmaps
 
 		// create 1-D texture of appropriate size and clear with texels of given colors
 		gli::texture1d Texture(Format,
-				static_cast<gli::texture1d::extent_type>(static_cast<gli::texture1d::extent_type::value_type>(Size)));
+			static_cast<gli::texture1d::extent_type>(static_cast<gli::texture1d::extent_type::value_type>(Size)));
 		Texture.clear(BaseColor);
 		Texture[0].clear(TargetColor);
 
 		// get texel at position #0 from top mipmap level
 		const genType TopTexel = Texture.load<genType>(static_cast<gli::texture1d::extent_type>(0),
-				Texture.max_level());
+			Texture.max_level());
 
 		// If texture has multiple mipmap levels, texel from top level must match base color
 		if (Texture.levels() > 1)
@@ -43,7 +43,7 @@ namespace generate_mipmaps
 
 		// get texel at position #0 from top mipmap level (should match target color)
 		const genType TopTexelA = MipmapsA.load<genType>(static_cast<gli::texture1d::extent_type>(0),
-				MipmapsA.max_level());
+			MipmapsA.max_level());
 		Error += (TopTexelA == TargetColor) ? 0 : 1;
 
 		// if texture has multiple mipmap levels, texel from top level can't match texel from original texture
@@ -59,7 +59,7 @@ namespace generate_mipmaps
 
 		// load texel at position #0 from top mipmap level (should match target color)
 		const genType TopTexelB = MipmapsB.load<genType>(static_cast<gli::texture1d::extent_type>(0),
-				MipmapsB.max_level());
+			MipmapsB.max_level());
 		Error += (TopTexelB == TargetColor) ? 0 : 1;
 
 		// if texture has multiple levels, texel from top level can't match texel from original texture
@@ -72,8 +72,6 @@ namespace generate_mipmaps
 
 		// Compare custom mipmaps generation and wrapper mipmaps generation
 		Error += (MipmapsViewA == MipmapsViewB) ? 0 : 1;
-
-		// TODO: comparison failing for Size >= 24
 		Error += (MipmapsA == MipmapsB) ? 0 : 1;
 
 		return Error;
@@ -97,88 +95,88 @@ int main()
 	for (const auto Filter: Filters) {
 		for (const auto Size: Sizes) {
 			Error += generate_mipmaps::test(gli::FORMAT_R16_SFLOAT_PACK16,
-					gli::packHalf(glm::vec1(0.0f)),
-					gli::packHalf(glm::vec1(1.0f)),
-					Size,
-					Filter);
+				gli::packHalf(glm::vec1(0.0f)),
+				gli::packHalf(glm::vec1(1.0f)),
+				Size,
+				Filter);
 
 			Error += generate_mipmaps::test(gli::FORMAT_RG16_SFLOAT_PACK16,
-					gli::packHalf(glm::vec2(0.0f, 0.0f)),
-					gli::packHalf(glm::vec2(1.0f, 0.5f)),
-					Size,
-					Filter);
+				gli::packHalf(glm::vec2(0.0f, 0.0f)),
+				gli::packHalf(glm::vec2(1.0f, 0.5f)),
+				Size,
+				Filter);
 
 			Error += generate_mipmaps::test(gli::FORMAT_RGB16_SFLOAT_PACK16,
-					gli::packHalf(glm::vec3(0.0f, 0.0f, 0.0f)),
-					gli::packHalf(glm::vec3(1.0f, 0.5f, 0.0f)),
-					Size,
-					Filter);
+				gli::packHalf(glm::vec3(0.0f, 0.0f, 0.0f)),
+				gli::packHalf(glm::vec3(1.0f, 0.5f, 0.0f)),
+				Size,
+				Filter);
 
 			Error += generate_mipmaps::test(gli::FORMAT_RGBA16_SFLOAT_PACK16,
-					gli::packHalf(glm::vec4(0.0f, 0.0f, 0.0f, 0.0f)),
-					gli::packHalf(glm::vec4(1.0f, 0.5f, 0.0f, 1.0f)),
-					Size,
-					Filter);
+				gli::packHalf(glm::vec4(0.0f, 0.0f, 0.0f, 0.0f)),
+				gli::packHalf(glm::vec4(1.0f, 0.5f, 0.0f, 1.0f)),
+				Size,
+				Filter);
 
 			Error += generate_mipmaps::test(gli::FORMAT_R32_SFLOAT_PACK32,
-					glm::vec1(0.0f),
-					glm::vec1(1.0f),
-					Size,
-					Filter);
+				glm::vec1(0.0f),
+				glm::vec1(1.0f),
+				Size,
+				Filter);
 
 			Error += generate_mipmaps::test(gli::FORMAT_RG32_SFLOAT_PACK32,
-					glm::vec2(0.0f, 0.0f),
-					glm::vec2(1.0f, 0.5f),
-					Size,
-					Filter);
+				glm::vec2(0.0f, 0.0f),
+				glm::vec2(1.0f, 0.5f),
+				Size,
+				Filter);
 
 			Error += generate_mipmaps::test(gli::FORMAT_RGB32_SFLOAT_PACK32,
-					glm::vec3(0.0f, 0.0f, 0.0f),
-					glm::vec3(1.0f, 0.5f, 0.0f),
-					Size,
-					Filter);
+				glm::vec3(0.0f, 0.0f, 0.0f),
+				glm::vec3(1.0f, 0.5f, 0.0f),
+				Size,
+				Filter);
 
 			Error += generate_mipmaps::test(gli::FORMAT_RGBA32_SFLOAT_PACK32,
-					glm::vec4(0.0f, 0.0f, 0.0f, 0.0f),
-					glm::vec4(1.0f, 0.5f, 0.0f, 1.0f),
-					Size,
-					Filter);
+				glm::vec4(0.0f, 0.0f, 0.0f, 0.0f),
+				glm::vec4(1.0f, 0.5f, 0.0f, 1.0f),
+				Size,
+				Filter);
 
 			Error += generate_mipmaps::test(gli::FORMAT_RGBA4_UNORM_PACK16,
-					gli::packUnorm4x4(glm::vec4(0.0f, 0.0f, 0.0f, 0.0f)),
-					gli::packUnorm4x4(glm::vec4(1.0f, 0.5f, 0.0f, 1.0f)),
-					Size,
-					Filter);
+				gli::packUnorm4x4(glm::vec4(0.0f, 0.0f, 0.0f, 0.0f)),
+				gli::packUnorm4x4(glm::vec4(1.0f, 0.5f, 0.0f, 1.0f)),
+				Size,
+				Filter);
 
 			Error += generate_mipmaps::test(gli::FORMAT_RGBA8_UNORM_PACK8,
-					glm::u8vec4(0, 0, 0, 0),
-					glm::u8vec4(255, 127, 0, 255),
-					Size,
-					Filter);
+				glm::u8vec4(0, 0, 0, 0),
+				glm::u8vec4(255, 127, 0, 255),
+				Size,
+				Filter);
 
 			Error += generate_mipmaps::test(gli::FORMAT_RGBA8_SNORM_PACK8,
-					glm::i8vec4(0, 0, 0, 0),
-					glm::i8vec4(127, 63, 0, 1),
-					Size,
-					Filter);
+				glm::i8vec4(0, 0, 0, 0),
+				glm::i8vec4(127, 63, 0, 1),
+				Size,
+				Filter);
 
 			Error += generate_mipmaps::test(gli::FORMAT_RGB10A2_UNORM_PACK32,
-					gli::packUnorm3x10_1x2(glm::vec4(0.0f, 0.0f, 0.0f, 0.0f)),
-					gli::packUnorm3x10_1x2(glm::vec4(1.0f, 0.5f, 0.0f, 1.0f)),
-					Size,
-					Filter);
+				gli::packUnorm3x10_1x2(glm::vec4(0.0f, 0.0f, 0.0f, 0.0f)),
+				gli::packUnorm3x10_1x2(glm::vec4(1.0f, 0.5f, 0.0f, 1.0f)),
+				Size,
+				Filter);
 
 			Error += generate_mipmaps::test(gli::FORMAT_RGB10A2_SNORM_PACK32,
-					gli::packSnorm3x10_1x2(glm::vec4(0.0f, 0.0f, 0.0f, 0.0f)),
-					gli::packSnorm3x10_1x2(glm::vec4(1.0f, 0.5f, 0.0f, 1.0f)),
-					Size,
-					Filter);
+				gli::packSnorm3x10_1x2(glm::vec4(0.0f, 0.0f, 0.0f, 0.0f)),
+				gli::packSnorm3x10_1x2(glm::vec4(1.0f, 0.5f, 0.0f, 1.0f)),
+				Size,
+				Filter);
 
 			Error += generate_mipmaps::test(gli::FORMAT_RGB9E5_UFLOAT_PACK32,
-					gli::packF3x9_E1x5(glm::vec3(0.0f, 0.0f, 0.0f)),
-					gli::packF3x9_E1x5(glm::vec3(1.0f, 0.5f, 0.0f)),
-					Size,
-					Filter);
+				gli::packF3x9_E1x5(glm::vec3(0.0f, 0.0f, 0.0f)),
+				gli::packF3x9_E1x5(glm::vec3(1.0f, 0.5f, 0.0f)),
+				Size,
+				Filter);
 		}
 	}
 
