@@ -9,8 +9,8 @@
 // GLM
 #define GLM_FORCE_EXPLICIT_CTOR
 #include <glm/glm.hpp>
-#include <glm/gtc/vec1.hpp>
-#define GLM_ENABLE_EXPERIMENTAL
+#include <glm/ext/vector_int1.hpp>
+#include <glm/ext/scalar_uint_sized.hpp>
 
 #if GLM_COMPILER & GLM_COMPILER_VC
 #	define GLI_FORCE_INLINE __forceinline

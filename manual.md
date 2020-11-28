@@ -13,13 +13,15 @@
 + [2. Code samples](#section2)
 + [2.1. Generating mipmaps and converting float textures to rgb9e5](#section2_1)
 + [2.2. Creating an OpenGL texture object from file](#section2_2)
++ [3. References](#section3)
++ [3.1. Equivalent for other languages](#section3_1)
 
 ---
 ## Licenses <a name="section0"></a>
 
 ### The Happy Bunny License (Modified MIT License)
 
-Copyright (c) 2010 - 2017 G-Truc Creation
+Copyright (c) 2010 - 2020 G-Truc Creation
 
 Permission is hereby granted, free of charge, to any person obtaining a
 copy of this software and associated documentation files (the
@@ -47,7 +49,7 @@ SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 ### The MIT License
 
-Copyright (c) 2010 - 2017 G-Truc Creation
+Copyright (c) 2010 - 2020 G-Truc Creation
 
 Permission is hereby granted, free of charge, to any person obtaining a
 copy of this software and associated documentation files (the
@@ -284,3 +286,10 @@ GLuint create_texture(char const* Filename)
 	return TextureName;
 }
 ```
+
+---
+## <a name="section3"></a> 3. References
+
+### <a name="section3_1"></a> 3.1. Equivalent for other languages
+
+* [JVM OpenGL Image (GLI)](https://github.com/kotlin-graphics/gli)

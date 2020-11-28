@@ -14,7 +14,6 @@ namespace gli
 		, Filter(detail::get_filter<filter_type, detail::DIMENSION_2D, texture_type, interpolate_type, normalized_type, fetch_type, texel_type, T>(Mip, Min, is_border(Wrap)))
 	{
 		GLI_ASSERT(!Texture.empty());
-		GLI_ASSERT(!is_compressed(Texture.format()));
 		GLI_ASSERT((!std::numeric_limits<T>::is_iec559 && Mip == FILTER_NEAREST && Min == FILTER_NEAREST) || std::numeric_limits<T>::is_iec559);
 	}
 

@@ -1,5 +1,9 @@
 #include <gli/gli.hpp>
 
+static_assert(sizeof(gli::detail::dxt1_block) == 8, "DXT1-compressed block must be of size 8.");
+static_assert(sizeof(gli::detail::dxt3_block) == 16, "DXT3-compressed block must be of size 16.");
+static_assert(sizeof(gli::detail::dxt5_block) == 16, "DXT5-compressed block must be of size 16.");
+
 template <typename texture, typename genType>
 int test_texture (
 	texture const & Texture,
@@ -11,7 +15,7 @@ int test_texture (
 	int Error = 0;
 
 	texture TextureA(gli::duplicate(Texture));
-	TextureA.template clear<genType>(ClearColor);
+	TextureA.clear();
 	*TextureA.template data<genType>() = FirstColor;
 
 	texture TextureB = gli::flip(TextureA);
@@ -23,23 +27,16 @@ int test_texture (
 	return Error;
 }
 
-int main() {
-	static_assert(sizeof(gli::detail::dxt1_block) == 8, "DXT1-compressed block must be of size 8.");
-	static_assert(sizeof(gli::detail::dxt3_block) == 16, "DXT3-compressed block must be of size 16.");
-	static_assert(sizeof(gli::detail::dxt5_block) == 16, "DXT5-compressed block must be of size 16.");
-
+int main()
+{
 	int Error = 0;
 
 	const gli::texture2d::extent_type TextureSize(32);
 	const gli::size_t Levels = gli::levels(TextureSize);
 
-	Error += test_texture(gli::texture2d(gli::FORMAT_R8_UNORM_PACK8, TextureSize, Levels),
-		static_cast<glm::uint8>(255),
-		static_cast<glm::uint8>(0));
-
-	Error += test_texture(gli::texture2d(gli::FORMAT_RGB8_UNORM_PACK8, TextureSize, Levels),
-		glm::u8vec3(255, 128, 0),
-		glm::u8vec3(0, 128, 255));
+	Error += test_texture(
+		gli::texture2d(gli::FORMAT_RGB8_UNORM_PACK8, TextureSize, Levels),
+		glm::u8vec3(255, 128, 0), glm::u8vec3(0, 128, 255));
 
 	Error += test_texture(gli::texture2d(gli::FORMAT_RGBA8_UNORM_PACK8, TextureSize, Levels),
 		glm::u8vec4(255, 128, 0, 255),

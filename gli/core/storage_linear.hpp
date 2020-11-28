@@ -16,11 +16,8 @@
 #include <glm/gtc/round.hpp>
 #include <glm/gtc/bitfield.hpp>
 #include <glm/gtx/component_wise.hpp>
-//#include <glm/gtx/integer.hpp>
-//#include <glm/gtx/bit.hpp>
-//#include <glm/gtx/wrap.hpp>
 
-static_assert(GLM_VERSION >= 97, "GLI requires at least GLM 0.9.7");
+static_assert(GLM_VERSION >= 99, "GLI requires at least GLM 0.9.9");
 
 namespace gli
 {

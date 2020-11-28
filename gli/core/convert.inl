@@ -13,7 +13,8 @@ namespace gli
 		typedef typename detail::convert<texture_type, T, defaultp>::writeFunc write_type;
 
 		GLI_ASSERT(!Texture.empty());
-		GLI_ASSERT(!is_compressed(Texture.format()) && !is_compressed(Format));
+		GLI_ASSERT(has_decoder(Texture.format()) || !is_compressed(Texture.format()));
+		GLI_ASSERT(!is_compressed(Format));
 
 		fetch_type Fetch = detail::convert<texture_type, T, defaultp>::call(Texture.format()).Fetch;
 		write_type Write = detail::convert<texture_type, T, defaultp>::call(Format).Write;

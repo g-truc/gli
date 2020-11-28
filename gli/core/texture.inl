@@ -282,6 +282,7 @@ namespace gli
 	template <typename gen_type>
 	inline void texture::clear(gen_type const& Texel)
 	{
+		GLI_ASSERT(!gli::is_compressed(this->format()));
 		GLI_ASSERT(!this->empty());
 		GLI_ASSERT(block_size(this->format()) == sizeof(gen_type));
 
@@ -295,6 +296,7 @@ namespace gli
 	template <typename gen_type>
 	inline void texture::clear(size_type Layer, size_type Face, size_type Level, gen_type const& BlockData)
 	{
+		GLI_ASSERT(!gli::is_compressed(this->format()));
 		GLI_ASSERT(!this->empty());
 		GLI_ASSERT(block_size(this->format()) == sizeof(gen_type));
 		GLI_ASSERT(Layer >= 0 && Layer < this->layers() && Face >= 0 && Face < this->faces() && Level >= 0 && Level < this->levels());

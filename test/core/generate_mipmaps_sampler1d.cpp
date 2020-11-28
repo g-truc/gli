@@ -70,9 +70,20 @@ namespace generate_mipmaps
 		gli::texture1d MipmapsViewB(gli::view(MipmapsB, 0, 0));
 		Error += (TextureView == MipmapsViewB) ? 0 : 1;
 
+		Error += LoadA == LoadB ? 0 : 1;
+		
+		// Check levels
+		Error += MipmapsA.max_level() == MipmapsB.max_level() ? 0 : 1;
+
+		for(std::size_t i = 0; i < MipmapsA.max_level(); ++i)
+		{
+			genType const Load0 = MipmapsA.load<genType>(gli::texture1d::extent_type(0), i);
+			genType const Load1 = MipmapsB.load<genType>(gli::texture1d::extent_type(0), i);
+			Error += Load0 == Load1 ? 0 : 1;
+		}
+
 		// Compare custom mipmaps generation and wrapper mipmaps generation
-		Error += (MipmapsViewA == MipmapsViewB) ? 0 : 1;
-		Error += (MipmapsA == MipmapsB) ? 0 : 1;
+		Error += MipmapViewA == MipmapViewB ? 0 : 1;
 
 		return Error;
 	}
