@@ -13,41 +13,43 @@
 
 #include <glm/gtc/epsilon.hpp>
 
-namespace alloc {
-	int run() {
+namespace alloc
+{
+	int run()
+	{
 		int Error = 0;
 
 		std::vector<int> Sizes = { 16, 32, 15, 17, 1 };
 
-		for (std::size_t TargetIndex = gli::TARGET_FIRST; TargetIndex <= gli::TARGET_LAST; ++TargetIndex) {
-			for (std::size_t FormatIndex = gli::FORMAT_FIRST; FormatIndex <= gli::FORMAT_LAST; ++FormatIndex) {
-				const gli::format Format = static_cast<gli::format>(FormatIndex);
-				const gli::target Target = static_cast<gli::target>(TargetIndex);
-				const gli::texture::size_type Faces = gli::is_target_cube(Target) ? 6 : 1;
+		for (std::size_t TargetIndex = gli::TARGET_FIRST; TargetIndex <= gli::TARGET_LAST; ++TargetIndex)
+		for (std::size_t FormatIndex = gli::FORMAT_FIRST; FormatIndex <= gli::FORMAT_LAST; ++FormatIndex)
+		{
+			gli::format const Format = static_cast<gli::format>(FormatIndex);
+			gli::target const Target = static_cast<gli::target>(TargetIndex);
+			gli::texture::size_type const Faces = gli::is_target_cube(Target) ? 6 : 1;
 
-				if (gli::is_compressed(Format) && gli::is_target_1d(Target))
-					continue;
+			if(gli::is_compressed(Format) && gli::is_target_1d(Target))
+				continue;
 
-				for (const auto Size: Sizes) {
-					gli::texture::extent_type _Size(Size);
-
-					gli::texture TextureA(Target, Format, _Size, 1, Faces, gli::levels(_Size));
-					gli::texture TextureB(Target, Format, _Size, 1, Faces, gli::levels(_Size));
-
-					Error += (TextureA == TextureB) ? 0 : 1;
-				}
-			}
+		for(std::size_t SizeIndex = 0; SizeIndex < Sizes.size(); ++SizeIndex)
+		{
+			gli::texture::extent_type Size(Sizes[SizeIndex]);
+			gli::texture TextureA(Target, Format, Size, 1, Faces, gli::levels(Size));
+			gli::texture TextureB(Target, Format, Size, 1, Faces, gli::levels(Size));
+			Error += (TextureA == TextureB) ? 0 : 1;
 		}
 
 		return Error;
 	}
-} // namespace alloc
+}// namespace alloc
 
-namespace clear {
-	int run() {
+namespace clear
+{
+	int run()
+	{
 		int Error = 0;
 
-		const glm::u8vec4 Orange(255, 127, 0, 255);
+		glm::u8vec4 const Orange(255, 127, 0, 255);
 
 		gli::texture::extent_type Size(16, 16, 1);
 		gli::texture Texture(gli::TARGET_2D, gli::FORMAT_RGBA8_UNORM_PACK8, Size, 1, 1, gli::levels(Size));
@@ -56,30 +58,34 @@ namespace clear {
 
 		return Error;
 	}
-} // namespace clear
+}// namespace clear
 
-namespace query {
-	int run() {
+namespace query
+{
+	int run()
+	{
 		int Error = 0;
 
-		gli::texture Texture(gli::TARGET_2D, gli::FORMAT_RGBA8_UINT_PACK8, static_cast<gli::texture::extent_type>(1), 1, 1, 1);
+		gli::texture Texture(gli::TARGET_2D, gli::FORMAT_RGBA8_UINT_PACK8, gli::texture::extent_type(1), 1, 1, 1);
 
 		Error += (Texture.size() == sizeof(glm::u8vec4) * 1) ? 0 : 1;
 		Error += (Texture.format() == gli::FORMAT_RGBA8_UINT_PACK8) ? 0 : 1;
 		Error += (Texture.levels() == 1) ? 0 : 1;
 		Error += !Texture.empty() ? 0 : 1;
-		Error += (Texture.extent() == static_cast<gli::texture::extent_type>(1)) ? 0 : 1;
+		Error += Texture.extent() == gli::texture::extent_type(1) ? 0 : 1;
 
 		return Error;
 	}
-} // namespace query
+}//namespace query
 
-namespace tex_access {
-	int run() {
+namespace tex_access
+{
+	int run()
+	{
 		int Error(0);
 
 		{
-			gli::texture1d Texture(gli::FORMAT_RGBA8_UINT_PACK8, static_cast<gli::texture1d::extent_type>(2), 2);
+			gli::texture1d Texture(gli::FORMAT_RGBA8_UINT_PACK8, gli::texture1d::extent_type(2), 2);
 			GLI_ASSERT(!Texture.empty());
 
 			gli::image Image0 = Texture[0];
@@ -117,7 +123,7 @@ namespace tex_access {
 		}
 
 		{
-			gli::texture Texture(gli::TARGET_2D, gli::FORMAT_RGBA8_UINT_PACK8, static_cast<gli::texture::extent_type>(1), 1, 1, 1);
+			gli::texture Texture(gli::TARGET_2D, gli::FORMAT_RGBA8_UINT_PACK8, gli::texture::extent_type(1), 1, 1, 1);
 
 			std::size_t SizeA = Texture.size();
 			Error += (SizeA == sizeof(glm::u8vec4) * 1) ? 0 : 1;
@@ -132,14 +138,16 @@ namespace tex_access {
 
 		return Error;
 	}
-} // namespace tex_access
+}//namespace tex_access
 
-namespace size {
-	struct test {
+namespace size
+{
+	struct test
+	{
 		test(
-			const gli::format& Format,
-			const gli::texture::extent_type& Dimensions,
-			const gli::texture::size_type& Size) :
+			gli::format const & Format,
+			gli::texture::extent_type const & Dimensions,
+			gli::texture::size_type const & Size) :
 			Format(Format),
 			Dimensions(Dimensions),
 			Size(Size)
@@ -150,7 +158,8 @@ namespace size {
 		gli::texture::size_type Size;
 	};
 
-	int run() {
+	int run()
+	{
 		int Error = 0;
 
 		std::vector<test> Tests = {
@@ -158,28 +167,31 @@ namespace size {
 			test(gli::FORMAT_R8_UINT_PACK8, static_cast<gli::texture::extent_type>(1), 1)
 		};
 
-		for (const auto& Test: Tests) {
+		for(std::size_t i = 0; i < Tests.size(); ++i)
+		{
 			gli::texture Texture(
 				gli::TARGET_2D,
-				Test.Format,
-				static_cast<gli::texture::extent_type>(1),
-				static_cast<gli::texture::size_type>(1),
-				static_cast<gli::texture::size_type>(1),
-				static_cast<gli::texture::size_type>(1));
+				Tests[i].Format,
+				gli::texture::extent_type(1),
+				gli::texture::size_type(1),
+				gli::texture::size_type(1),
+				gli::texture::size_type(1));
 
-			Error += (Texture.size() == Test.Size) ? 0 : 1;
+			Error += Texture.size() == Tests[i].Size ? 0 : 1;
 			GLI_ASSERT(!Error);
 		}
 
 		return Error;
 	}
-} // namespace size
+}//namespace size
 
-namespace specialize {
-	int run() {
+namespace specialize
+{
+	int run()
+	{
 		int Error = 0;
 
-		gli::texture Texture(gli::TARGET_1D, gli::FORMAT_RGBA8_UNORM_PACK8, static_cast<gli::texture::extent_type>(1), 1, 1, 1);
+		gli::texture Texture(gli::TARGET_1D, gli::FORMAT_RGBA8_UNORM_PACK8, gli::texture::extent_type(1), 1, 1, 1);
 		gli::texture1d Texture1D(Texture);
 		gli::texture1d_array Texture1DArray(Texture);
 		gli::texture2d Texture2D(Texture);
@@ -222,15 +234,17 @@ namespace specialize {
 
 		return Error;
 	}
-} // namespace specialize
+}//namespace specialize
 
-namespace load {
-	int run() {
+namespace load
+{
+	int run()
+	{
 		int Error = 0;
 
 		// Texture 1D
 		{
-			gli::texture Texture(gli::TARGET_1D, gli::FORMAT_RGBA8_UNORM_PACK8, static_cast<gli::texture::extent_type>(1), 1, 1, 1);
+			gli::texture Texture(gli::TARGET_1D, gli::FORMAT_RGBA8_UNORM_PACK8, gli::texture::extent_type(1), 1, 1, 1);
 			Texture.clear(glm::u8vec4(225, 127, 0, 255));
 
 			gli::save(Texture, "texture_1d.ktx");
@@ -244,7 +258,7 @@ namespace load {
 
 		// Texture 1D array
 		{
-			gli::texture Texture(gli::TARGET_1D_ARRAY, gli::FORMAT_RGBA8_UNORM_PACK8, static_cast<gli::texture::extent_type>(1), 2, 1, 1);
+			gli::texture Texture(gli::TARGET_1D_ARRAY, gli::FORMAT_RGBA8_UNORM_PACK8, gli::texture::extent_type(1), 2, 1, 1);
 			Texture.clear(glm::u8vec4(225, 127, 0, 255));
 			gli::save(Texture, "texture_1d_array.ktx");
 			gli::save(Texture, "texture_1d_array.dds");
@@ -257,7 +271,7 @@ namespace load {
 
 		// Texture 2D
 		{
-			gli::texture Texture(gli::TARGET_2D, gli::FORMAT_RGBA8_UNORM_PACK8, static_cast<gli::texture::extent_type>(1), 1, 1, 1);
+			gli::texture Texture(gli::TARGET_2D, gli::FORMAT_RGBA8_UNORM_PACK8, gli::texture::extent_type(1), 1, 1, 1);
 			Texture.clear(glm::u8vec4(225, 127, 0, 255));
 
 			gli::save(Texture, "texture_2d.ktx");
@@ -271,7 +285,7 @@ namespace load {
 
 		// Texture 2D array
 		{
-			gli::texture Texture(gli::TARGET_2D_ARRAY, gli::FORMAT_RGBA8_UNORM_PACK8, static_cast<gli::texture::extent_type>(1), 2, 1, 1);
+			gli::texture Texture(gli::TARGET_2D_ARRAY, gli::FORMAT_RGBA8_UNORM_PACK8, gli::texture::extent_type(1), 2, 1, 1);
 			Texture.clear(glm::u8vec4(225, 127, 0, 255));
 			gli::save(Texture, "texture_2d_array.ktx");
 			gli::save(Texture, "texture_2d_array.dds");
@@ -284,7 +298,7 @@ namespace load {
 
 		// Texture 3D
 		{
-			gli::texture Texture(gli::TARGET_3D, gli::FORMAT_RGBA8_UNORM_PACK8, static_cast<gli::texture::extent_type>(1), 1, 1, 1);
+			gli::texture Texture(gli::TARGET_3D, gli::FORMAT_RGBA8_UNORM_PACK8, gli::texture::extent_type(1), 1, 1, 1);
 			gli::save(Texture, "texture_3d.ktx");
 			gli::save(Texture, "texture_3d.dds");
 			gli::texture TextureKTX = gli::load("texture_3d.ktx");
@@ -296,7 +310,7 @@ namespace load {
 
 		// Texture cube
 		{
-			gli::texture Texture(gli::TARGET_CUBE, gli::FORMAT_RGBA8_UNORM_PACK8, static_cast<gli::texture::extent_type>(1), 1, 6, 1);
+			gli::texture Texture(gli::TARGET_CUBE, gli::FORMAT_RGBA8_UNORM_PACK8, gli::texture::extent_type(1), 1, 6, 1);
 			Texture.clear(glm::u8vec4(225, 127, 0, 255));
 			gli::save(Texture, "texture_cube.ktx");
 			gli::save(Texture, "texture_cube.dds");
@@ -309,7 +323,7 @@ namespace load {
 
 		// Texture cube array
 		{
-			gli::texture Texture(gli::TARGET_CUBE_ARRAY, gli::FORMAT_RGBA8_UNORM_PACK8, static_cast<gli::texture::extent_type>(1), 2, 6, 1);
+			gli::texture Texture(gli::TARGET_CUBE_ARRAY, gli::FORMAT_RGBA8_UNORM_PACK8, gli::texture::extent_type(1), 2, 6, 1);
 			Texture.clear(glm::u8vec4(225, 127, 0, 255));
 			gli::save(Texture, "texture_cube_array.ktx");
 			gli::save(Texture, "texture_cube_array.dds");
@@ -322,10 +336,12 @@ namespace load {
 
 		return Error;
 	}
-} // namespace load
+}//namespace load
 
-namespace data {
-	int run() {
+namespace data
+{
+	int run()
+	{
 		int Error = 0;
 
 		gli::texture Texture(gli::TARGET_2D_ARRAY, gli::FORMAT_RGBA8_UNORM_PACK8, static_cast<gli::texture::extent_type>(1), 2, 1, 1);
@@ -334,19 +350,21 @@ namespace data {
 
 		return Error;
 	}
-} // namespace data
+}//namespace data
 
-namespace perf_generic_creation {
-	int main(std::size_t Iterations) {
+namespace perf_generic_creation
+{
+	int main(std::size_t Iterations)
+	{
 		int Error = 0;
 
 		std::clock_t TimeBegin = std::clock();
 
-		for (std::size_t Index = 0, Count = Iterations; Index < Count; ++Index) {
-			for (std::size_t FormatIndex = gli::FORMAT_FIRST, FormatCount = gli::FORMAT_COUNT; FormatIndex < FormatCount; ++FormatIndex) {
-				gli::texture Texture(gli::TARGET_2D_ARRAY, static_cast<gli::format>(FormatIndex), gli::texture::extent_type(4, 4, 1), 1, 1, 3);
-				Error += Texture.empty() ? 1 : 0;
-			}
+		for(std::size_t Index = 0, Count = Iterations; Index < Count; ++Index)
+		for(std::size_t FormatIndex = gli::FORMAT_FIRST, FormatCount = gli::FORMAT_COUNT; FormatIndex < FormatCount; ++FormatIndex)
+		{
+			gli::texture Texture(gli::TARGET_2D_ARRAY, static_cast<gli::format>(FormatIndex), gli::texture::extent_type(4, 4, 1), 1, 1, 3);
+			Error += Texture.empty() ? 1 : 0;
 		}
 
 		std::clock_t TimeEnd = std::clock();
@@ -354,19 +372,21 @@ namespace perf_generic_creation {
 
 		return Error;
 	}
-} // namespace perf_generic_creation
+}//namespace perf_generic_creation
 
-namespace perf_2d_array_creation {
-	int main(std::size_t Iterations) {
+namespace perf_2d_array_creation
+{
+	int main(std::size_t Iterations)
+	{
 		int Error = 0;
 
 		std::clock_t TimeBegin = std::clock();
 
-		for (std::size_t Index = 0, Count = Iterations; Index < Count; ++Index) {
-			for (std::size_t FormatIndex = gli::FORMAT_FIRST, FormatCount = gli::FORMAT_COUNT; FormatIndex < FormatCount; ++FormatIndex) {
-				gli::texture2d_array Texture(static_cast<gli::format>(FormatIndex), gli::texture2d_array::extent_type(4), 1, 3);
-				Error += Texture.empty() ? 1 : 0;
-			}
+		for(std::size_t Index = 0, Count = Iterations; Index < Count; ++Index)
+		for(std::size_t FormatIndex = gli::FORMAT_FIRST, FormatCount = gli::FORMAT_COUNT; FormatIndex < FormatCount; ++FormatIndex)
+		{
+			gli::texture2d_array Texture(static_cast<gli::format>(FormatIndex), gli::texture2d_array::extent_type(4), 1, 3);
+			Error += Texture.empty() ? 1 : 0;
 		}
 
 		std::clock_t TimeEnd = std::clock();
@@ -374,19 +394,21 @@ namespace perf_2d_array_creation {
 
 		return Error;
 	}
-} // namespace perf_2d_array_creation
+}//namespace perf_2d_array_creation
 
-namespace perf_2d_creation {
-	int main(std::size_t Iterations) {
+namespace perf_2d_creation
+{
+	int main(std::size_t Iterations)
+	{
 		int Error = 0;
 
 		std::clock_t TimeBegin = std::clock();
 
-		for (std::size_t Index = 0, Count = Iterations; Index < Count; ++Index) {
-			for (std::size_t FormatIndex = gli::FORMAT_FIRST, FormatCount = gli::FORMAT_COUNT; FormatIndex < FormatCount; ++FormatIndex) {
-				gli::texture2d Texture(static_cast<gli::format>(FormatIndex), static_cast<gli::texture2d::extent_type>(4), 3);
-				Error += Texture.empty() ? 1 : 0;
-			}
+		for(std::size_t Index = 0, Count = Iterations; Index < Count; ++Index)
+		for(std::size_t FormatIndex = gli::FORMAT_FIRST, FormatCount = gli::FORMAT_COUNT; FormatIndex < FormatCount; ++FormatIndex)
+		{
+			gli::texture2d Texture(static_cast<gli::format>(FormatIndex), gli::texture2d::extent_type(4), 3);
+			Error += Texture.empty() ? 1 : 0;
 		}
 
 		std::clock_t TimeEnd = std::clock();
@@ -394,19 +416,21 @@ namespace perf_2d_creation {
 
 		return Error;
 	}
-} // namespace perf_2d_creation
+}//namespace perf_2d_creation
 
-namespace perf_cube_array_creation {
-	int main(std::size_t Iterations) {
+namespace perf_cube_array_creation
+{
+	int main(std::size_t Iterations)
+	{
 		int Error = 0;
 
 		std::clock_t TimeBegin = std::clock();
 
-		for (std::size_t Index = 0, Count = Iterations; Index < Count; ++Index) {
-			for (std::size_t FormatIndex = gli::FORMAT_FIRST, FormatCount = gli::FORMAT_COUNT; FormatIndex < FormatCount; ++FormatIndex) {
-				gli::texture_cube_array Texture(static_cast<gli::format>(FormatIndex), gli::texture2d_array::extent_type(4), 1, 3);
-				Error += Texture.empty() ? 1 : 0;
-			}
+		for(std::size_t Index = 0, Count = Iterations; Index < Count; ++Index)
+		for(std::size_t FormatIndex = gli::FORMAT_FIRST, FormatCount = gli::FORMAT_COUNT; FormatIndex < FormatCount; ++FormatIndex)
+		{
+			gli::texture_cube_array Texture(static_cast<gli::format>(FormatIndex), gli::texture2d_array::extent_type(4), 1, 3);
+			Error += Texture.empty() ? 1 : 0;
 		}
 
 		std::clock_t TimeEnd = std::clock();
@@ -414,15 +438,17 @@ namespace perf_cube_array_creation {
 
 		return Error;
 	}
-} // namespace perf_cube_array_creation
+}//namespace perf_cube_array_creation
 
-namespace perf_cube_array_access {
-	int main(std::size_t Iterations) {
+namespace perf_cube_array_access
+{
+	int main(std::size_t Iterations)
+	{
 		int Error = 0;
 
 		std::vector<std::shared_ptr<gli::texture_cube_array>> Textures(gli::FORMAT_COUNT);
-
-		for (std::size_t FormatIndex = gli::FORMAT_FIRST, FormatCount = gli::FORMAT_COUNT; FormatIndex < FormatCount; ++FormatIndex) {
+		for(std::size_t FormatIndex = gli::FORMAT_FIRST, FormatCount = gli::FORMAT_COUNT; FormatIndex < FormatCount; ++FormatIndex)
+		{
 			Textures[FormatIndex].reset(new gli::texture_cube_array(static_cast<gli::format>(FormatIndex), gli::texture2d_array::extent_type(4), 3, 3));
 			Error += Textures[FormatIndex]->empty() ? 1 : 0;
 		}
@@ -430,14 +456,14 @@ namespace perf_cube_array_access {
 		{
 			std::clock_t TimeBegin = std::clock();
 
-			for(gli::size_t Index = 0, Count = Iterations; Index < Count; ++Index) {
-				for (std::size_t FormatIndex = gli::FORMAT_FIRST, FormatCount = gli::FORMAT_COUNT; FormatIndex < FormatCount; ++FormatIndex) {
-					for (gli::size_t LayerIndex = 0, LayerCount = Textures[FormatIndex]->layers(); LayerIndex < LayerCount; ++LayerIndex) {
-						for (gli::size_t LevelIndex = 0, LevelCount = Textures[FormatIndex]->levels(); LevelIndex < LevelCount; ++LevelIndex) {
-							void* BaseAddress = Textures[FormatIndex]->data(LayerIndex, 0, LevelIndex);
-							Error += (BaseAddress != nullptr) ? 0 : 1;
-						}
-					}
+			for(gli::size_t Index = 0, Count = Iterations; Index < Count; ++Index)
+			for(std::size_t FormatIndex = gli::FORMAT_FIRST, FormatCount = gli::FORMAT_COUNT; FormatIndex < FormatCount; ++FormatIndex)
+			{
+				for(gli::size_t LayerIndex = 0, LayerCount = Textures[FormatIndex]->layers(); LayerIndex < LayerCount; ++LayerIndex)
+				for(gli::size_t LevelIndex = 0, LevelCount = Textures[FormatIndex]->levels(); LevelIndex < LevelCount; ++LevelIndex)
+				{
+					void* BaseAddress = Textures[FormatIndex]->data(LayerIndex, 0, LevelIndex);
+					Error += BaseAddress != nullptr ? 0 : 1;
 				}
 			}
 
@@ -448,14 +474,14 @@ namespace perf_cube_array_access {
 		{
 			std::clock_t TimeBegin = std::clock();
 
-			for (gli::size_t Index = 0, Count = Iterations; Index < Count; ++Index) {
-				for (std::size_t FormatIndex = gli::FORMAT_FIRST, FormatCount = gli::FORMAT_COUNT; FormatIndex < FormatCount; ++FormatIndex) {
-					for (gli::size_t LayerIndex = 0, LayerCount = Textures[FormatIndex]->layers(); LayerIndex < LayerCount; ++LayerIndex) {
-						for (gli::size_t LevelIndex = 0, LevelCount = Textures[FormatIndex]->levels(); LevelIndex < LevelCount; ++LevelIndex) {
-							gli::size_t Size = Textures[FormatIndex]->size(LevelIndex);
-							Error += (Size != 0) ? 0 : 1;
-						}
-					}
+			for(gli::size_t Index = 0, Count = Iterations; Index < Count; ++Index)
+			for(std::size_t FormatIndex = gli::FORMAT_FIRST, FormatCount = gli::FORMAT_COUNT; FormatIndex < FormatCount; ++FormatIndex)
+			{
+				for(gli::size_t LayerIndex = 0, LayerCount = Textures[FormatIndex]->layers(); LayerIndex < LayerCount; ++LayerIndex)
+				for(gli::size_t LevelIndex = 0, LevelCount = Textures[FormatIndex]->levels(); LevelIndex < LevelCount; ++LevelIndex)
+				{
+					gli::size_t Size = Textures[FormatIndex]->size(LevelIndex);
+					Error += Size != 0 ? 0 : 1;
 				}
 			}
 
@@ -465,16 +491,16 @@ namespace perf_cube_array_access {
 
 		{
 			std::clock_t TimeBegin = std::clock();
-
-			for (gli::size_t Index = 0, Count = Iterations; Index < Count; ++Index) {
-				for (std::size_t FormatIndex = gli::FORMAT_FIRST, FormatCount = gli::FORMAT_COUNT; FormatIndex < FormatCount; ++FormatIndex) {
-					for (gli::size_t LayerIndex = 0, LayerCount = Textures[FormatIndex]->layers(); LayerIndex < LayerCount; ++LayerIndex) {
-						for(gli::size_t LevelIndex = 0, LevelCount = Textures[FormatIndex]->levels(); LevelIndex < LevelCount; ++LevelIndex) {
-							gli::texture_cube_array::extent_type Extent = Textures[FormatIndex]->extent(LevelIndex);
-							Error += (Extent.x != 0) ? 0 : 1;
-							Error += (Extent.y != 0) ? 0 : 1;
-						}
-					}
+			
+			for(gli::size_t Index = 0, Count = Iterations; Index < Count; ++Index)
+			for(std::size_t FormatIndex = gli::FORMAT_FIRST, FormatCount = gli::FORMAT_COUNT; FormatIndex < FormatCount; ++FormatIndex)
+			{
+				for(gli::size_t LayerIndex = 0, LayerCount = Textures[FormatIndex]->layers(); LayerIndex < LayerCount; ++LayerIndex)
+				for(gli::size_t LevelIndex = 0, LevelCount = Textures[FormatIndex]->levels(); LevelIndex < LevelCount; ++LevelIndex)
+				{
+					gli::texture_cube_array::extent_type Extent = Textures[FormatIndex]->extent(LevelIndex);
+					Error += Extent.x != 0 ? 0 : 1;
+					Error += Extent.y != 0 ? 0 : 1;
 				}
 			}
 
@@ -484,19 +510,19 @@ namespace perf_cube_array_access {
 
 		{
 			std::clock_t TimeBegin = std::clock();
+			
+			for(gli::size_t Index = 0, Count = Iterations; Index < Count; ++Index)
+			for(std::size_t FormatIndex = gli::FORMAT_FIRST, FormatCount = gli::FORMAT_COUNT; FormatIndex < FormatCount; ++FormatIndex)
+			{
+				for(gli::size_t LayerIndex = 0, LayerCount = Textures[FormatIndex]->layers(); LayerIndex < LayerCount; ++LayerIndex)
+				for(gli::size_t LevelIndex = 0, LevelCount = Textures[FormatIndex]->levels(); LevelIndex < LevelCount; ++LevelIndex)
+				{
+					gli::texture_cube_array::extent_type Extent = Textures[FormatIndex]->extent(LevelIndex);
+					gli::size_t Size = Textures[FormatIndex]->size(LevelIndex);
 
-			for (gli::size_t Index = 0, Count = Iterations; Index < Count; ++Index) {
-				for (std::size_t FormatIndex = gli::FORMAT_FIRST, FormatCount = gli::FORMAT_COUNT; FormatIndex < FormatCount; ++FormatIndex) {
-					for (gli::size_t LayerIndex = 0, LayerCount = Textures[FormatIndex]->layers(); LayerIndex < LayerCount; ++LayerIndex) {
-						for (gli::size_t LevelIndex = 0, LevelCount = Textures[FormatIndex]->levels(); LevelIndex < LevelCount; ++LevelIndex) {
-							gli::texture_cube_array::extent_type Extent = Textures[FormatIndex]->extent(LevelIndex);
-							gli::size_t Size = Textures[FormatIndex]->size(LevelIndex);
-
-							Error += (Extent.x != 0) ? 0 : 1;
-							Error += (Extent.y != 0) ? 0 : 1;
-							Error += (Size != 0) ? 0 : 1;
-						}
-					}
+					Error += Extent.x != 0 ? 0 : 1;
+					Error += Extent.y != 0 ? 0 : 1;
+					Error += Size != 0 ? 0 : 1;
 				}
 			}
 
@@ -506,23 +532,24 @@ namespace perf_cube_array_access {
 
 		{
 			std::clock_t TimeBegin = std::clock();
+			
+			for(gli::size_t Index = 0, Count = Iterations; Index < Count; ++Index)
+			for(std::size_t FormatIndex = gli::FORMAT_FIRST, FormatCount = gli::FORMAT_COUNT; FormatIndex < FormatCount; ++FormatIndex)
+			{
+				for(gli::size_t LayerIndex = 0, LayerCount = Textures[FormatIndex]->layers(); LayerIndex < LayerCount; ++LayerIndex)
+				for(gli::size_t LevelIndex = 0, LevelCount = Textures[FormatIndex]->levels(); LevelIndex < LevelCount; ++LevelIndex)
+				{
+					gli::texture_cube_array::extent_type Extent = Textures[FormatIndex]->extent(LevelIndex);
+					gli::size_t Size = Textures[FormatIndex]->size(LevelIndex);
+					void* BaseAddress = Textures[FormatIndex]->data(LayerIndex, 0, LevelIndex);
 
-			for (gli::size_t Index = 0, Count = Iterations; Index < Count; ++Index) {
-				for (std::size_t FormatIndex = gli::FORMAT_FIRST, FormatCount = gli::FORMAT_COUNT; FormatIndex < FormatCount; ++FormatIndex) {
-					for (gli::size_t LayerIndex = 0, LayerCount = Textures[FormatIndex]->layers(); LayerIndex < LayerCount; ++LayerIndex) {
-						for (gli::size_t LevelIndex = 0, LevelCount = Textures[FormatIndex]->levels(); LevelIndex < LevelCount; ++LevelIndex) {
-							gli::texture_cube_array::extent_type Extent = Textures[FormatIndex]->extent(LevelIndex);
-							gli::size_t Size = Textures[FormatIndex]->size(LevelIndex);
-							void* BaseAddress = Textures[FormatIndex]->data(LayerIndex, 0, LevelIndex);
-
-							Error += (Extent.x != 0) ? 0 : 1;
-							Error += (Extent.y != 0) ? 0 : 1;
-							Error += (Size != 0) ? 0 : 1;
-							Error += (BaseAddress != nullptr) ? 0 : 1;
-						}
-					}
+					Error += Extent.x != 0 ? 0 : 1;
+					Error += Extent.y != 0 ? 0 : 1;
+					Error += Size != 0 ? 0 : 1;
+					Error += BaseAddress != nullptr ? 0 : 1;
 				}
 			}
+
 
 			std::clock_t TimeEnd = std::clock();
 			std::cout << "Cube array texture all access performance test: " << TimeEnd - TimeBegin << std::endl;
@@ -530,29 +557,32 @@ namespace perf_cube_array_access {
 
 		return Error;
 	}
-} // namespace perf_cube_array_access
+}//namespace perf_cube_array_access
 
-namespace perf_texture2d_access {
-	int main(std::size_t Iterations) {
+namespace perf_texture2d_access
+{
+	int main(std::size_t Iterations)
+	{
 		int Error = 0;
 
 		std::vector<std::shared_ptr<gli::texture2d>> Textures(gli::FORMAT_COUNT);
-		for (std::size_t FormatIndex = gli::FORMAT_FIRST, FormatCount = gli::FORMAT_COUNT; FormatIndex < FormatCount; ++FormatIndex) {
-			Textures[FormatIndex].reset(new gli::texture2d(static_cast<gli::format>(FormatIndex), static_cast<gli::texture2d::extent_type>(4), 9));
+		for(std::size_t FormatIndex = gli::FORMAT_FIRST, FormatCount = gli::FORMAT_COUNT; FormatIndex < FormatCount; ++FormatIndex)
+		{
+			Textures[FormatIndex].reset(new gli::texture2d(static_cast<gli::format>(FormatIndex), gli::texture2d::extent_type(4), 9));
 			Error += Textures[FormatIndex]->empty() ? 1 : 0;
 		}
 
 		{
 			std::clock_t TimeBegin = std::clock();
 
-			for (gli::size_t Index = 0, Count = Iterations; Index < Count; ++Index) {
-				for (std::size_t FormatIndex = gli::FORMAT_FIRST, FormatCount = gli::FORMAT_COUNT; FormatIndex < FormatCount; ++FormatIndex) {
-					for (gli::size_t LayerIndex = 0, LayerCount = Textures[FormatIndex]->layers(); LayerIndex < LayerCount; ++LayerIndex) {
-						for (gli::size_t LevelIndex = 0, LevelCount = Textures[FormatIndex]->levels(); LevelIndex < LevelCount; ++LevelIndex) {
-							void* BaseAddress = Textures[FormatIndex]->data(LayerIndex, 0, LevelIndex);
-							Error += (BaseAddress != nullptr) ? 0 : 1;
-						}
-					}
+			for(gli::size_t Index = 0, Count = Iterations; Index < Count; ++Index)
+			for(std::size_t FormatIndex = gli::FORMAT_FIRST, FormatCount = gli::FORMAT_COUNT; FormatIndex < FormatCount; ++FormatIndex)
+			{
+				for(gli::size_t LayerIndex = 0, LayerCount = Textures[FormatIndex]->layers(); LayerIndex < LayerCount; ++LayerIndex)
+				for(gli::size_t LevelIndex = 0, LevelCount = Textures[FormatIndex]->levels(); LevelIndex < LevelCount; ++LevelIndex)
+				{
+					void* BaseAddress = Textures[FormatIndex]->data(LayerIndex, 0, LevelIndex);
+					Error += BaseAddress != nullptr ? 0 : 1;
 				}
 			}
 
@@ -563,14 +593,14 @@ namespace perf_texture2d_access {
 		{
 			std::clock_t TimeBegin = std::clock();
 
-			for (gli::size_t Index = 0, Count = Iterations; Index < Count; ++Index) {
-				for (std::size_t FormatIndex = gli::FORMAT_FIRST, FormatCount = gli::FORMAT_COUNT; FormatIndex < FormatCount; ++FormatIndex) {
-					for (gli::size_t LayerIndex = 0, LayerCount = Textures[FormatIndex]->layers(); LayerIndex < LayerCount; ++LayerIndex) {
-						for (gli::size_t LevelIndex = 0, LevelCount = Textures[FormatIndex]->levels(); LevelIndex < LevelCount; ++LevelIndex) {
-							gli::size_t Size = Textures[FormatIndex]->size(LevelIndex);
-							Error += (Size != 0) ? 0 : 1;
-						}
-					}
+			for(gli::size_t Index = 0, Count = Iterations; Index < Count; ++Index)
+			for(std::size_t FormatIndex = gli::FORMAT_FIRST, FormatCount = gli::FORMAT_COUNT; FormatIndex < FormatCount; ++FormatIndex)
+			{
+				for(gli::size_t LayerIndex = 0, LayerCount = Textures[FormatIndex]->layers(); LayerIndex < LayerCount; ++LayerIndex)
+				for(gli::size_t LevelIndex = 0, LevelCount = Textures[FormatIndex]->levels(); LevelIndex < LevelCount; ++LevelIndex)
+				{
+					gli::size_t Size = Textures[FormatIndex]->size(LevelIndex);
+					Error += Size != 0 ? 0 : 1;
 				}
 			}
 
@@ -581,15 +611,15 @@ namespace perf_texture2d_access {
 		{
 			std::clock_t TimeBegin = std::clock();
 
-			for (gli::size_t Index = 0, Count = Iterations; Index < Count; ++Index) {
-				for (std::size_t FormatIndex = gli::FORMAT_FIRST, FormatCount = gli::FORMAT_COUNT; FormatIndex < FormatCount; ++FormatIndex) {
-					for (gli::size_t LayerIndex = 0, LayerCount = Textures[FormatIndex]->layers(); LayerIndex < LayerCount; ++LayerIndex) {
-						for (gli::size_t LevelIndex = 0, LevelCount = Textures[FormatIndex]->levels(); LevelIndex < LevelCount; ++LevelIndex) {
-							gli::texture2d::extent_type Extent = Textures[FormatIndex]->extent(LevelIndex);
-							Error += (Extent.x != 0) ? 0 : 1;
-							Error += (Extent.y != 0) ? 0 : 1;
-						}
-					}
+			for(gli::size_t Index = 0, Count = Iterations; Index < Count; ++Index)
+			for(std::size_t FormatIndex = gli::FORMAT_FIRST, FormatCount = gli::FORMAT_COUNT; FormatIndex < FormatCount; ++FormatIndex)
+			{
+				for(gli::size_t LayerIndex = 0, LayerCount = Textures[FormatIndex]->layers(); LayerIndex < LayerCount; ++LayerIndex)
+				for(gli::size_t LevelIndex = 0, LevelCount = Textures[FormatIndex]->levels(); LevelIndex < LevelCount; ++LevelIndex)
+				{
+					gli::texture2d::extent_type Extent = Textures[FormatIndex]->extent(LevelIndex);
+					Error += Extent.x != 0 ? 0 : 1;
+					Error += Extent.y != 0 ? 0 : 1;
 				}
 			}
 
@@ -600,18 +630,18 @@ namespace perf_texture2d_access {
 		{
 			std::clock_t TimeBegin = std::clock();
 
-			for (gli::size_t Index = 0, Count = Iterations; Index < Count; ++Index) {
-				for (std::size_t FormatIndex = gli::FORMAT_FIRST, FormatCount = gli::FORMAT_COUNT; FormatIndex < FormatCount; ++FormatIndex) {
-					for (gli::size_t LayerIndex = 0, LayerCount = Textures[FormatIndex]->layers(); LayerIndex < LayerCount; ++LayerIndex) {
-						for (gli::size_t LevelIndex = 0, LevelCount = Textures[FormatIndex]->levels(); LevelIndex < LevelCount; ++LevelIndex) {
-							gli::texture2d::extent_type Extent = Textures[FormatIndex]->extent(LevelIndex);
-							gli::size_t Size = Textures[FormatIndex]->size(LevelIndex);
+			for(gli::size_t Index = 0, Count = Iterations; Index < Count; ++Index)
+			for(std::size_t FormatIndex = gli::FORMAT_FIRST, FormatCount = gli::FORMAT_COUNT; FormatIndex < FormatCount; ++FormatIndex)
+			{
+				for(gli::size_t LayerIndex = 0, LayerCount = Textures[FormatIndex]->layers(); LayerIndex < LayerCount; ++LayerIndex)
+				for(gli::size_t LevelIndex = 0, LevelCount = Textures[FormatIndex]->levels(); LevelIndex < LevelCount; ++LevelIndex)
+				{
+					gli::texture2d::extent_type Extent = Textures[FormatIndex]->extent(LevelIndex);
+					gli::size_t Size = Textures[FormatIndex]->size(LevelIndex);
 
-							Error += (Extent.x != 0) ? 0 : 1;
-							Error += (Extent.y != 0) ? 0 : 1;
-							Error += (Size != 0) ? 0 : 1;
-						}
-					}
+					Error += Extent.x != 0 ? 0 : 1;
+					Error += Extent.y != 0 ? 0 : 1;
+					Error += Size != 0 ? 0 : 1;
 				}
 			}
 
@@ -622,20 +652,21 @@ namespace perf_texture2d_access {
 		{
 			std::clock_t TimeBegin = std::clock();
 
-			for (gli::size_t Index = 0, Count = Iterations; Index < Count; ++Index) {
-				for (std::size_t FormatIndex = gli::FORMAT_FIRST, FormatCount = gli::FORMAT_COUNT; FormatIndex < FormatCount; ++FormatIndex) {
-					for (gli::size_t LayerIndex = 0, LayerCount = Textures[FormatIndex]->layers(); LayerIndex < LayerCount; ++LayerIndex) {
-						for (gli::size_t LevelIndex = 0, LevelCount = Textures[FormatIndex]->levels(); LevelIndex < LevelCount; ++LevelIndex) {
-							gli::texture2d::extent_type Extent = Textures[FormatIndex]->extent(LevelIndex);
-							gli::size_t Size = Textures[FormatIndex]->size(LevelIndex);
-							void* BaseAddress = Textures[FormatIndex]->data(LayerIndex, 0, LevelIndex);
+			
+			for(gli::size_t Index = 0, Count = Iterations; Index < Count; ++Index)
+			for(std::size_t FormatIndex = gli::FORMAT_FIRST, FormatCount = gli::FORMAT_COUNT; FormatIndex < FormatCount; ++FormatIndex)
+			{
+				for(gli::size_t LayerIndex = 0, LayerCount = Textures[FormatIndex]->layers(); LayerIndex < LayerCount; ++LayerIndex)
+				for(gli::size_t LevelIndex = 0, LevelCount = Textures[FormatIndex]->levels(); LevelIndex < LevelCount; ++LevelIndex)
+				{
+					gli::texture2d::extent_type Extent = Textures[FormatIndex]->extent(LevelIndex);
+					gli::size_t Size = Textures[FormatIndex]->size(LevelIndex);
+					void* BaseAddress = Textures[FormatIndex]->data(LayerIndex, 0, LevelIndex);
 
-							Error += (Extent.x != 0) ? 0 : 1;
-							Error += (Extent.y != 0) ? 0 : 1;
-							Error += (Size != 0) ? 0 : 1;
-							Error += (BaseAddress != nullptr) ? 0 : 1;
-						}
-					}
+					Error += Extent.x != 0 ? 0 : 1;
+					Error += Extent.y != 0 ? 0 : 1;
+					Error += Size != 0 ? 0 : 1;
+					Error += BaseAddress != nullptr ? 0 : 1;
 				}
 			}
 
@@ -645,24 +676,27 @@ namespace perf_texture2d_access {
 
 		return Error;
 	}
-} // namespace perf_texture2d_access
+}//namespace perf_texture2d_access
 
-namespace perf_texture_load {
-	int main(int Extent) {
+namespace perf_texture_load
+{
+	int main(int Extent)
+	{
 		int Error = 0;
 
-		gli::texture2d Texture(gli::FORMAT_R8_UNORM_PACK8, static_cast<gli::texture2d::extent_type>(Extent));
-		Texture.clear(static_cast<gli::u8>(255));
+		gli::texture2d Texture(gli::FORMAT_R8_UNORM_PACK8, gli::texture2d::extent_type(Extent));
+		Texture.clear(gli::u8(255));
 
 		std::clock_t TimeBegin = std::clock();
-
-		for (gli::texture2d::size_type LevelIndex = 0, LevelCount = Texture.levels(); LevelIndex < LevelCount; ++LevelIndex) {
-			const gli::texture2d::extent_type Extent = Texture.extent(LevelIndex);
-			for (gli::size_t y = 0; y < Extent.y; ++y) {
-				for (gli::size_t x = 0; x < Extent.x; ++x) {
-					gli::u8 Texel = Texture.load<gli::u8>(gli::texture2d::extent_type(x, y), LevelIndex);
-					Error += (Texel == static_cast<gli::u8>(255)) ? 0 : 1;
-				}
+		
+		for(gli::texture2d::size_type LevelIndex = 0, LevelCount = Texture.levels(); LevelIndex < LevelCount; ++LevelIndex)
+		{
+			gli::texture2d::extent_type const Extent = Texture.extent(LevelIndex);
+			for(gli::size_t y = 0; y < Extent.y; ++y)
+			for(gli::size_t x = 0; x < Extent.x; ++x)
+			{
+				gli::u8 Texel = Texture.load<gli::u8>(gli::texture2d::extent_type(x, y), LevelIndex);
+				Error += Texel == gli::u8(255) ? 0 : 1;
 			}
 		}
 
@@ -671,27 +705,30 @@ namespace perf_texture_load {
 
 		return Error;
 	}
-} // namespace perf_texture_load
+}//namespace perf_texture_load
 
-namespace perf_texture_fetch {
-	int main(int Extent) {
+namespace perf_texture_fetch
+{
+	int main(int Extent)
+	{
 		int Error = 0;
 
-		gli::texture2d Texture(gli::FORMAT_R8_UNORM_PACK8, static_cast<gli::texture2d::extent_type>(Extent));
-		Texture.clear(static_cast<gli::u8>(255));
+		gli::texture2d Texture(gli::FORMAT_R8_UNORM_PACK8, gli::texture2d::extent_type(Extent));
+		Texture.clear(gli::u8(255));
 
 		gli::sampler2d<float> Sampler(Texture, gli::WRAP_CLAMP_TO_EDGE);
 
 		std::clock_t TimeBegin = std::clock();
-
-		for (gli::texture2d::size_type LevelIndex = 0, LevelCount = Texture.levels(); LevelIndex < LevelCount; ++LevelIndex) {
-			const gli::texture2d::extent_type Extent = Texture.extent(LevelIndex);
-			for (gli::size_t y = 0; y < Extent.y; ++y) {
-				for (gli::size_t x = 0; x < Extent.x; ++x) {
-					const gli::vec4& Texel = Sampler.texel_fetch(gli::texture2d::extent_type(x, y), LevelIndex);
-					Error += gli::all(gli::epsilonEqual(Texel, gli::vec4(1, 0, 0, 1), 0.001f)) ? 0 : 1;
-					assert(!Error);
-				}
+		
+		for(gli::texture2d::size_type LevelIndex = 0, LevelCount = Texture.levels(); LevelIndex < LevelCount; ++LevelIndex)
+		{
+			gli::texture2d::extent_type const Extent = Texture.extent(LevelIndex);
+			for(gli::size_t y = 0; y < Extent.y; ++y)
+			for(gli::size_t x = 0; x < Extent.x; ++x)
+			{
+				gli::vec4 const& Texel = Sampler.texel_fetch(gli::texture2d::extent_type(x, y), LevelIndex);
+				Error += gli::all(gli::epsilonEqual(Texel, gli::vec4(1, 0, 0, 1), 0.001f)) ? 0 : 1;
+				assert(!Error);
 			}
 		}
 
@@ -700,26 +737,29 @@ namespace perf_texture_fetch {
 
 		return Error;
 	}
-} // namespace perf_texture_fetch
+}//namespace perf_texture_fetch
 
-namespace perf_texture_lod_nearest {
-	int main(int Extent) {
+namespace perf_texture_lod_nearest
+{
+	int main(int Extent)
+	{
 		int Error = 0;
-
-		gli::texture2d Texture(gli::FORMAT_R8_UNORM_PACK8, static_cast<gli::texture2d::extent_type>(Extent));
-		Texture.clear(static_cast<gli::u8>(255));
+		
+		gli::texture2d Texture(gli::FORMAT_R8_UNORM_PACK8, gli::texture2d::extent_type(Extent));
+		Texture.clear(gli::u8(255));
 
 		gli::sampler2d<float> Sampler(Texture, gli::WRAP_CLAMP_TO_EDGE, gli::FILTER_NEAREST, gli::FILTER_NEAREST);
 
 		std::clock_t TimeBegin = std::clock();
-
-		for (gli::texture2d::size_type LevelIndex = 0, LevelCount = Texture.levels(); LevelIndex < LevelCount; ++LevelIndex) {
-			const gli::texture2d::extent_type Extent = Texture.extent(LevelIndex);
-			for (gli::size_t y = 0; y < Extent.y; ++y) {
-				for (gli::size_t x = 0; x < Extent.x; ++x) {
-					const gli::vec4& Texel = Sampler.texture_lod(glm::vec2(x, y) / glm::vec2(Extent), static_cast<float>(LevelIndex));
-					Error += gli::all(gli::epsilonEqual(Texel, gli::vec4(1, 0, 0, 1), 0.001f)) ? 0 : 1;
-				}
+		
+		for(gli::texture2d::size_type LevelIndex = 0, LevelCount = Texture.levels(); LevelIndex < LevelCount; ++LevelIndex)
+		{
+			gli::texture2d::extent_type const Extent = Texture.extent(LevelIndex);
+			for(gli::size_t y = 0; y < Extent.y; ++y)
+			for(gli::size_t x = 0; x < Extent.x; ++x)
+			{
+				gli::vec4 const& Texel = Sampler.texture_lod(glm::vec2(x, y) / glm::vec2(Extent), static_cast<float>(LevelIndex));
+				Error += gli::all(gli::epsilonEqual(Texel, gli::vec4(1, 0, 0, 1), 0.001f)) ? 0 : 1;
 			}
 		}
 
@@ -728,26 +768,29 @@ namespace perf_texture_lod_nearest {
 
 		return Error;
 	}
-} // namespace perf_texture_lod_nearest
+}//namespace perf_texture_lod_nearest
 
-namespace perf_texture_lod_linear {
-	int main(int Extent) {
+namespace perf_texture_lod_linear
+{
+	int main(int Extent)
+	{
 		int Error = 0;
 
-		gli::texture2d Texture(gli::FORMAT_R8_UNORM_PACK8, static_cast<gli::texture2d::extent_type>(Extent));
-		Texture.clear(static_cast<gli::u8>(255));
+		gli::texture2d Texture(gli::FORMAT_R8_UNORM_PACK8, gli::texture2d::extent_type(Extent));
+		Texture.clear(gli::u8(255));
 
 		gli::sampler2d<float> Sampler(Texture, gli::WRAP_CLAMP_TO_EDGE, gli::FILTER_NEAREST, gli::FILTER_LINEAR);
 
 		std::clock_t TimeBegin = std::clock();
 
-		for (gli::texture2d::size_type LevelIndex = 0, LevelCount = Texture.levels(); LevelIndex < LevelCount; ++LevelIndex) {
-			const gli::texture2d::extent_type Extent = Texture.extent(LevelIndex);
-			for (gli::size_t y = 0; y < Extent.y; ++y) {
-				for (gli::size_t x = 0; x < Extent.x; ++x) {
-					const gli::vec4& Texel = Sampler.texture_lod(glm::vec2(x, y) / glm::vec2(Extent), static_cast<float>(LevelIndex));
-					Error += gli::all(gli::epsilonEqual(Texel, gli::vec4(1, 0, 0, 1), 0.001f)) ? 0 : 1;
-				}
+		for(gli::texture2d::size_type LevelIndex = 0, LevelCount = Texture.levels(); LevelIndex < LevelCount; ++LevelIndex)
+		{
+			gli::texture2d::extent_type const Extent = Texture.extent(LevelIndex);
+			for(gli::size_t y = 0; y < Extent.y; ++y)
+			for(gli::size_t x = 0; x < Extent.x; ++x)
+			{
+				gli::vec4 const& Texel = Sampler.texture_lod(glm::vec2(x, y) / glm::vec2(Extent), static_cast<float>(LevelIndex));
+				Error += gli::all(gli::epsilonEqual(Texel, gli::vec4(1, 0, 0, 1), 0.001f)) ? 0 : 1;
 			}
 		}
 
@@ -756,14 +799,16 @@ namespace perf_texture_lod_linear {
 
 		return Error;
 	}
-} // namespace perf_texture_lod_linear
+}//namespace perf_texture_lod_linear
 
-namespace perf_generate_mipmaps_nearest {
-	int main(int Extent) {
+namespace perf_generate_mipmaps_nearest
+{
+	int main(int Extent)
+	{
 		int Error = 0;
-
-		gli::texture2d TextureSource(gli::FORMAT_R8_UNORM_PACK8, static_cast<gli::texture2d::extent_type>(Extent));
-		TextureSource.clear(static_cast<gli::u8>(255));
+		
+		gli::texture2d TextureSource(gli::FORMAT_R8_UNORM_PACK8, gli::texture2d::extent_type(Extent));
+		TextureSource.clear(gli::u8(255));
 
 		std::clock_t TimeBegin = std::clock();
 
@@ -775,14 +820,16 @@ namespace perf_generate_mipmaps_nearest {
 
 		return Error;
 	}
-} // namespace perf_generate_mipmaps_nearest
+}//namespace perf_generate_mipmaps_nearest
 
-namespace perf_generate_mipmaps_linear {
-	int main(int Extent) {
+namespace perf_generate_mipmaps_linear
+{
+	int main(int Extent)
+	{
 		int Error = 0;
 
-		gli::texture2d TextureSource(gli::FORMAT_R8_UNORM_PACK8, static_cast<gli::texture2d::extent_type>(Extent));
-		TextureSource.clear(static_cast<gli::u8>(255));
+		gli::texture2d TextureSource(gli::FORMAT_R8_UNORM_PACK8, gli::texture2d::extent_type(Extent));
+		TextureSource.clear(gli::u8(255));
 
 		std::clock_t TimeBegin = std::clock();
 
@@ -794,15 +841,16 @@ namespace perf_generate_mipmaps_linear {
 
 		return Error;
 	}
-} // namespace perf_generate_mipmaps_linear
+}//namespace perf_generate_mipmaps_linear
 
-int main() {
+int main()
+{
 	int Error = 0;
 
 	const bool DO_PERF_TEST = false;
 
-	const std::size_t PERF_TEST_ACCESS_ITERATION = DO_PERF_TEST ? 100000 : 0;
-	const std::size_t PERF_TEST_CREATION_ITERATION = DO_PERF_TEST ? 1000 : 0;
+	std::size_t const PERF_TEST_ACCESS_ITERATION = DO_PERF_TEST ? 100000 : 0;
+	std::size_t const PERF_TEST_CREATION_ITERATION = DO_PERF_TEST ? 1000 : 0;
 
 	Error += perf_texture_load::main(DO_PERF_TEST ? 8192 : 1024);
 	Error += perf_texture_fetch::main(DO_PERF_TEST ? 8192 : 1024);

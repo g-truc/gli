@@ -28,18 +28,20 @@ namespace
 
 	struct params
 	{
-		params(const std::string& Filename, gli::format Format)
-			: Filename(Filename), Format(Format) {}
+		params(std::string const & Filename, gli::format Format)
+			: Filename(Filename)
+			, Format(Format)
+		{}
 
 		std::string Filename;
 		gli::format Format;
 	};
-} // namespace
+}// namespace
 
 // TODO use `const std::string& instead?`
 bool convert_rgb32f_rgb9e5(const char* FilenameSrc, const char* FilenameDst)
 {
-	if (FilenameDst == nullptr)
+	if(FilenameDst == nullptr)
 		return false;
 	// TOOO: use the C++ std::string::find instead?
 	if(std::strstr(FilenameDst, ".dds") != nullptr || std::strstr(FilenameDst, ".ktx") != nullptr)
@@ -47,10 +49,10 @@ bool convert_rgb32f_rgb9e5(const char* FilenameSrc, const char* FilenameDst)
 
 	gli::texture2d TextureSource(gli::load(FilenameSrc));
 
-	if (TextureSource.empty())
+	if(TextureSource.empty())
 		return false;
 
-	if (TextureSource.format() != gli::FORMAT_RGB16_SFLOAT_PACK16 && TextureSource.format() != gli::FORMAT_RGB32_SFLOAT_PACK32)
+	if(TextureSource.format() != gli::FORMAT_RGB16_SFLOAT_PACK16 && TextureSource.format() != gli::FORMAT_RGB32_SFLOAT_PACK32)
 		return false;
 
 	gli::texture2d TextureMipmaped = gli::generate_mipmaps(TextureSource, gli::FILTER_LINEAR);
@@ -73,21 +75,21 @@ namespace r8unorm
 		A.store(gli::extent2d(1, 1), 0, glm::u8vec1(0));
 		A.store(gli::extent2d(0, 1), 0, glm::u8vec1(16));
 
-		const gli::texture2d B = gli::convert(A, gli::FORMAT_RGBA8_UNORM_PACK8);
-		const gli::texture2d C = gli::convert(B, gli::FORMAT_R8_UNORM_PACK8);
+		gli::texture2d const B = gli::convert(A, gli::FORMAT_RGBA8_UNORM_PACK8);
+		gli::texture2d const C = gli::convert(B, gli::FORMAT_R8_UNORM_PACK8);
 		Error += (A == C) ? 0 : 1;
 
-		const gli::texture2d D = gli::convert(A, gli::FORMAT_RGB8_UNORM_PACK8);
-		const gli::texture2d E = gli::convert(D, gli::FORMAT_R8_UNORM_PACK8);
+		gli::texture2d const D = gli::convert(A, gli::FORMAT_RGB8_UNORM_PACK8);
+		gli::texture2d const E = gli::convert(D, gli::FORMAT_R8_UNORM_PACK8);
 		Error += (A == E) ? 0 : 1;
 
-		const gli::texture2d F = gli::convert(A, gli::FORMAT_RG8_UNORM_PACK8);
-		const gli::texture2d G = gli::convert(F, gli::FORMAT_R8_UNORM_PACK8);
+		gli::texture2d const F = gli::convert(A, gli::FORMAT_RG8_UNORM_PACK8);
+		gli::texture2d const G = gli::convert(F, gli::FORMAT_R8_UNORM_PACK8);
 		Error += (A == G) ? 0 : 1;
 
 		return Error;
 	}
-} // namespace r8unorm
+}// namespace r8unorm
 
 namespace rg8unorm
 {
@@ -101,17 +103,17 @@ namespace rg8unorm
 		A.store(gli::extent2d(1, 1), 0, glm::u8vec2(0, 128));
 		A.store(gli::extent2d(0, 1), 0, glm::u8vec2(16, 48));
 
-		const gli::texture2d B = gli::convert(A, gli::FORMAT_RGBA8_UNORM_PACK8);
-		const gli::texture2d C = gli::convert(B, gli::FORMAT_RG8_UNORM_PACK8);
+		gli::texture2d const B = gli::convert(A, gli::FORMAT_RGBA8_UNORM_PACK8);
+		gli::texture2d const C = gli::convert(B, gli::FORMAT_RG8_UNORM_PACK8);
 		Error += (A == C) ? 0 : 1;
 
-		const gli::texture2d D = gli::convert(A, gli::FORMAT_RGB8_UNORM_PACK8);
-		const gli::texture2d E = gli::convert(D, gli::FORMAT_RG8_UNORM_PACK8);
+		gli::texture2d const D = gli::convert(A, gli::FORMAT_RGB8_UNORM_PACK8);
+		gli::texture2d const E = gli::convert(D, gli::FORMAT_RG8_UNORM_PACK8);
 		Error += (A == E) ? 0 : 1;
 
 		return Error;
 	}
-} // namespace rg8unorm
+}// namespace rg8unorm
 
 namespace rgb8unorm
 {
@@ -125,14 +127,14 @@ namespace rgb8unorm
 		A.store(gli::extent2d(1, 1), 0, glm::u8vec3(0, 128, 255));
 		A.store(gli::extent2d(0, 1), 0, glm::u8vec3(16, 48, 192));
 
-		const gli::texture2d B = gli::convert(A, gli::FORMAT_RGBA8_UNORM_PACK8);
-		const gli::texture2d C = gli::convert(B, gli::FORMAT_RGB8_UNORM_PACK8);
+		gli::texture2d const B = gli::convert(A, gli::FORMAT_RGBA8_UNORM_PACK8);
+		gli::texture2d const C = gli::convert(B, gli::FORMAT_RGB8_UNORM_PACK8);
 
 		Error += (A == C) ? 0 : 1;
 
 		return Error;
 	}
-} // namespace rgb8unorm
+}// namespace rgb8unorm
 
 namespace r16unorm
 {
@@ -146,8 +148,8 @@ namespace r16unorm
 		A.store(gli::extent2d(1, 1), 0, glm::u16vec1(0x5555));
 		A.store(gli::extent2d(0, 1), 0, glm::u16vec1(0x3333));
 
-		const gli::texture2d B = gli::convert(A, gli::FORMAT_RGBA16_UNORM_PACK16);
-		const gli::texture2d C = gli::convert(B, gli::FORMAT_R16_UNORM_PACK16);
+		gli::texture2d const B = gli::convert(A, gli::FORMAT_RGBA16_UNORM_PACK16);
+		gli::texture2d const C = gli::convert(B, gli::FORMAT_R16_UNORM_PACK16);
 
 		Error += (A == C) ? 0 : 1;
 
@@ -167,14 +169,14 @@ namespace rg16unorm
 		A.store(gli::extent2d(1, 1), 0, glm::u16vec2(0x5555, 0x2222));
 		A.store(gli::extent2d(0, 1), 0, glm::u16vec2(0xaaaa, 0xcccc));
 
-		const gli::texture2d B = gli::convert(A, gli::FORMAT_RGBA16_UNORM_PACK16);
-		const gli::texture2d C = gli::convert(B, gli::FORMAT_RG16_UNORM_PACK16);
+		gli::texture2d const B = gli::convert(A, gli::FORMAT_RGBA16_UNORM_PACK16);
+		gli::texture2d const C = gli::convert(B, gli::FORMAT_RG16_UNORM_PACK16);
 
 		Error += (A == C) ? 0 : 1;
 
 		return Error;
 	}
-} // namespace rg16unorm
+}// namespace rg16unorm
 
 namespace rgb16unorm
 {
@@ -188,14 +190,14 @@ namespace rgb16unorm
 		A.store(gli::extent2d(1, 1), 0, glm::u16vec3(0x5555, 0x2222, 0xbbbb));
 		A.store(gli::extent2d(0, 1), 0, glm::u16vec3(0xaaaa, 0xcccc, 0xeeee));
 
-		const gli::texture2d B = gli::convert(A, gli::FORMAT_RGBA16_UNORM_PACK16);
-		const gli::texture2d C = gli::convert(B, gli::FORMAT_RGB16_UNORM_PACK16);
+		gli::texture2d const B = gli::convert(A, gli::FORMAT_RGBA16_UNORM_PACK16);
+		gli::texture2d const C = gli::convert(B, gli::FORMAT_RGB16_UNORM_PACK16);
 
 		Error += (A == C) ? 0 : 1;
 
 		return Error;
 	}
-} // namespace rgb16unorm
+}// namespace rgb16unorm
 
 namespace rgb10a2norm
 {
@@ -268,7 +270,7 @@ namespace rgb10a2norm
 
 		return Error;
 	}
-} // namespace rgb10a2norm
+}// namespace rgb10a2norm
 
 namespace rgba_dxt1unorm
 {
@@ -361,7 +363,7 @@ namespace rgba_dxt1unorm
 
 		return Error;
 	}
-} // namespace rgba_dxt1unorm
+}// namespace rgba_dxt1unorm
 
 namespace rgba_dxt3unorm
 {
@@ -454,7 +456,7 @@ namespace rgba_dxt3unorm
 
 		return Error;
 	}
-} // namespace rgba_dxt3unorm
+}// namespace rgba_dxt3unorm
 
 namespace rgba_dxt5unorm
 {
@@ -547,7 +549,7 @@ namespace rgba_dxt5unorm
 
 		return Error;
 	}
-} // namespace rgba_dxt5unorm
+}// namespace rgba_dxt5unorm
 
 namespace r_bc4unorm
 {
@@ -641,7 +643,7 @@ namespace r_bc4unorm
 
 		return Error;
 	}
-} // namespace r_bc4unorm
+}// namespace r_bc4unorm
 
 namespace rg_bc5unorm
 {
@@ -753,7 +755,7 @@ namespace rg_bc5unorm
 
 		return Error;
 	}
-} // namespace rg_bc5unorm
+}// namespace rg_bc5unorm
 
 namespace load_file
 {
@@ -781,7 +783,7 @@ namespace load_file
 
 		return Error;
 	}
-} // namespace load_file
+}// namespace load_file
 
 int main() {
 	int Error = 0;
