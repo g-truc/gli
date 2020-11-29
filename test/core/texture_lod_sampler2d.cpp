@@ -1,14 +1,14 @@
+#include <gli/sampler2d.hpp>
+#include <gli/comparison.hpp>
+#include <glm/ext/vector_relational.hpp>
 #include <ctime>
 #include <limits>
 #include <array>
 
-#include <gli/sampler2d.hpp>
-#include <gli/comparison.hpp>
-
-#include <glm/ext/vector_relational.hpp>
-
-namespace load {
-	int test() {
+namespace load
+{
+	int test()
+	{
 		int Error = 0;
 
 		gli::texture2d Texture(gli::FORMAT_RGBA8_UNORM_PACK8, gli::texture2d::extent_type(4, 2), 1);
@@ -41,10 +41,12 @@ namespace load {
 
 		return Error;
 	}
-} // namespace load
+}//namespace load
 
-namespace texture_lod {
-	int test() {
+namespace texture_lod
+{
+	int test()
+	{
 		int Error = 0;
 
 		{
@@ -59,33 +61,29 @@ namespace texture_lod {
 			Texture.store(gli::extent2d(2, 3), 0, gli::u8vec4(  0, 127, 255, 255));
 			Texture.store(gli::extent2d(3, 3), 0, gli::u8vec4(  0, 127, 255, 255));
 
-			const gli::sampler2d<float> Sampler(Texture,
-					gli::WRAP_CLAMP_TO_EDGE,
-					gli::FILTER_LINEAR,
-					gli::FILTER_LINEAR,
-					gli::vec4(1.0f, 0.5f, 0.0f, 1.0f));
+			gli::sampler2d<float> const Sampler(Texture, gli::WRAP_CLAMP_TO_EDGE, gli::FILTER_LINEAR, gli::FILTER_LINEAR, gli::vec4(1.0f, 0.5f, 0.0f, 1.0f));
 
-			const gli::vec4 SampleA = Sampler.texture_lod(gli::fsampler2D::normalized_type(0.25f), 0.0f);
+			gli::vec4 const SampleA = Sampler.texture_lod(gli::fsampler2D::normalized_type(0.25f), 0.0f);
 			Error += gli::all(glm::equal(SampleA, gli::vec4(1.0f, 0.5f, 0.0f, 1.0f), 0.01f)) ? 0 : 1;
 
-			const gli::vec4 SampleB = Sampler.texture_lod(gli::fsampler2D::normalized_type(0.8f), 0.0f);
+			gli::vec4 const SampleB = Sampler.texture_lod(gli::fsampler2D::normalized_type(0.8f), 0.0f);
 			Error += gli::all(glm::equal(SampleB, gli::vec4(0.0f, 0.5f, 1.0f, 1.0f), 0.01f)) ? 0 : 1;
 
-			const gli::vec4 SampleC = Sampler.texture_lod(gli::fsampler2D::normalized_type(0.20f, 0.8f), 0.0f);
+			gli::vec4 const SampleC = Sampler.texture_lod(gli::fsampler2D::normalized_type(0.20f, 0.8f), 0.0f);
 			Error += gli::all(glm::equal(SampleC, gli::vec4(0.0f, 0.0f, 0.0f, 1.0f), 0.01f)) ? 0 : 1;
 
-			const gli::vec4 SampleD = Sampler.texture_grad(gli::fsampler2D::normalized_type(0.25f),
-					gli::fsampler2D::normalized_type(0.0f),
-					gli::fsampler2D::normalized_type(0.0f));
+			const gli::vec4 SampleD = Sampler.texture_grad(gli::fsampler2D::normalized_type(0.25f), gli::fsampler2D::normalized_type(0.0f), gli::fsampler2D::normalized_type(0.0f));
 			Error += gli::all(glm::equal(SampleD, gli::vec4(1.0f, 0.5f, 0.0f, 1.0f), 0.01f)) ? 0 : 1;
 		}
 
 		return Error;
 	}
-} // namespace texture_lod
+}//namespace texture_lod
 
-namespace sampler_type {
-	int test() {
+namespace sampler_type
+{
+	int test()
+	{
 		int Error = 0;
 
 		{
@@ -105,9 +103,10 @@ namespace sampler_type {
 		
 		return Error;
 	}
-} // namespace sampler_type
+}//namespace sampler_type
 
-int main() {
+int main()
+{
 	int Error = 0;
 
 	Error += texture_lod::test();

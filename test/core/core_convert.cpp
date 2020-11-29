@@ -36,7 +36,7 @@ namespace
 		std::string Filename;
 		gli::format Format;
 	};
-}// namespace
+}//namespace
 
 // TODO use `const std::string& instead?`
 bool convert_rgb32f_rgb9e5(const char* FilenameSrc, const char* FilenameDst)
@@ -48,10 +48,8 @@ bool convert_rgb32f_rgb9e5(const char* FilenameSrc, const char* FilenameDst)
 		return false;
 
 	gli::texture2d TextureSource(gli::load(FilenameSrc));
-
 	if(TextureSource.empty())
 		return false;
-
 	if(TextureSource.format() != gli::FORMAT_RGB16_SFLOAT_PACK16 && TextureSource.format() != gli::FORMAT_RGB32_SFLOAT_PACK32)
 		return false;
 
@@ -89,7 +87,7 @@ namespace r8unorm
 
 		return Error;
 	}
-}// namespace r8unorm
+}//namespace r8unorm
 
 namespace rg8unorm
 {
@@ -113,7 +111,7 @@ namespace rg8unorm
 
 		return Error;
 	}
-}// namespace rg8unorm
+}//namespace rg8unorm
 
 namespace rgb8unorm
 {
@@ -134,7 +132,7 @@ namespace rgb8unorm
 
 		return Error;
 	}
-}// namespace rgb8unorm
+}//namespace rgb8unorm
 
 namespace r16unorm
 {
@@ -155,7 +153,7 @@ namespace r16unorm
 
 		return Error;
 	}
-} // namespace r16unorm
+}//namespace r16unorm
 
 namespace rg16unorm
 {
@@ -176,7 +174,7 @@ namespace rg16unorm
 
 		return Error;
 	}
-}// namespace rg16unorm
+}//namespace rg16unorm
 
 namespace rgb16unorm
 {
@@ -197,7 +195,7 @@ namespace rgb16unorm
 
 		return Error;
 	}
-}// namespace rgb16unorm
+}//namespace rgb16unorm
 
 namespace rgb10a2norm
 {
@@ -270,7 +268,7 @@ namespace rgb10a2norm
 
 		return Error;
 	}
-}// namespace rgb10a2norm
+}//namespace rgb10a2norm
 
 namespace rgba_dxt1unorm
 {
@@ -363,7 +361,7 @@ namespace rgba_dxt1unorm
 
 		return Error;
 	}
-}// namespace rgba_dxt1unorm
+}//namespace rgba_dxt1unorm
 
 namespace rgba_dxt3unorm
 {
@@ -456,7 +454,7 @@ namespace rgba_dxt3unorm
 
 		return Error;
 	}
-}// namespace rgba_dxt3unorm
+}//namespace rgba_dxt3unorm
 
 namespace rgba_dxt5unorm
 {
@@ -549,7 +547,7 @@ namespace rgba_dxt5unorm
 
 		return Error;
 	}
-}// namespace rgba_dxt5unorm
+}//namespace rgba_dxt5unorm
 
 namespace r_bc4unorm
 {
@@ -643,7 +641,7 @@ namespace r_bc4unorm
 
 		return Error;
 	}
-}// namespace r_bc4unorm
+}//namespace r_bc4unorm
 
 namespace rg_bc5unorm
 {
@@ -755,7 +753,7 @@ namespace rg_bc5unorm
 
 		return Error;
 	}
-}// namespace rg_bc5unorm
+}//namespace rg_bc5unorm
 
 namespace load_file
 {
@@ -783,9 +781,10 @@ namespace load_file
 
 		return Error;
 	}
-}// namespace load_file
+}//namespace load_file
 
-int main() {
+int main()
+{
 	int Error = 0;
 
 	Error += load_file::test();

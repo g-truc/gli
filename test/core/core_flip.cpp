@@ -38,13 +38,16 @@ int main()
 		gli::texture2d(gli::FORMAT_RGB8_UNORM_PACK8, TextureSize, Levels),
 		glm::u8vec3(255, 128, 0), glm::u8vec3(0, 128, 255));
 
-	Error += test_texture(gli::texture2d(gli::FORMAT_RGBA8_UNORM_PACK8, TextureSize, Levels),
+	Error += test_texture(
+		gli::texture2d(gli::FORMAT_RGBA8_UNORM_PACK8, TextureSize, Levels),
 		glm::u8vec4(255, 128, 0, 255), glm::u8vec4(0, 128, 255, 255));
 
-	Error += test_texture(gli::texture2d(gli::FORMAT_RGBA32_SFLOAT_PACK32, TextureSize, Levels),
+	Error += test_texture(
+		gli::texture2d(gli::FORMAT_RGBA32_SFLOAT_PACK32, TextureSize, Levels),
 		glm::f32vec4(1.0, 0.5, 0.0, 1.0), glm::f32vec4(0.0, 0.5, 1.0, 1.0));
 
-	Error += test_texture(gli::texture2d_array(gli::FORMAT_RGBA8_UNORM_PACK8, TextureSize, 4, Levels),
+	Error += test_texture(
+		gli::texture2d_array(gli::FORMAT_RGBA8_UNORM_PACK8, TextureSize, 4, Levels),
 		glm::u8vec4(255, 128, 0, 255), glm::u8vec4(0, 128, 255, 255));
 
 	Error += test_texture(

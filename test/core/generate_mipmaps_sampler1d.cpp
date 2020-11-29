@@ -18,7 +18,7 @@ namespace generate_mipmaps
 	int test(gli::format Format, genType const & Black, genType const & Color, std::size_t Size, gli::filter Filter)
 	{
 		int Error = 0;
-		
+
 		gli::texture1d Texture(Format, gli::texture1d::extent_type(static_cast<gli::texture1d::extent_type::value_type>(Size)));
 		Texture.clear(Black);
 		Texture[0].clear(Color);
@@ -39,7 +39,7 @@ namespace generate_mipmaps
 
 		gli::texture1d MipmapViewA(gli::view(MipmapsA, 0, 0));
 		Error += TextureView == MipmapViewA ? 0 : 1;
-		
+
 		// Mipmaps generation using the wrapper function
 		gli::texture1d MipmapsB = gli::generate_mipmaps(gli::texture1d(gli::duplicate(Texture)), Filter);
 		genType const LoadB = MipmapsB.load<genType>(gli::texture1d::extent_type(0), MipmapsB.max_level());
@@ -54,12 +54,14 @@ namespace generate_mipmaps
 
 		// Check levels
 		Error += MipmapsA.max_level() == MipmapsB.max_level() ? 0 : 1;
+
 		for(std::size_t i = 0; i < MipmapsA.max_level(); ++i)
 		{
 			genType const Load0 = MipmapsA.load<genType>(gli::texture1d::extent_type(0), i);
 			genType const Load1 = MipmapsB.load<genType>(gli::texture1d::extent_type(0), i);
 			Error += Load0 == Load1 ? 0 : 1;
 		}
+
 		// Compare custom mipmaps generation and wrapper mipmaps generation
 		Error += MipmapViewA == MipmapViewB ? 0 : 1;
 

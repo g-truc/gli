@@ -21,8 +21,8 @@ namespace alloc
 
 		std::vector<int> Sizes = { 16, 32, 15, 17, 1 };
 
-		for (std::size_t TargetIndex = gli::TARGET_FIRST; TargetIndex <= gli::TARGET_LAST; ++TargetIndex)
-		for (std::size_t FormatIndex = gli::FORMAT_FIRST; FormatIndex <= gli::FORMAT_LAST; ++FormatIndex)
+		for(std::size_t TargetIndex = gli::TARGET_FIRST; TargetIndex <= gli::TARGET_LAST; ++TargetIndex)
+		for(std::size_t FormatIndex = gli::FORMAT_FIRST; FormatIndex <= gli::FORMAT_LAST; ++FormatIndex)
 		{
 			gli::format const Format = static_cast<gli::format>(FormatIndex);
 			gli::target const Target = static_cast<gli::target>(TargetIndex);
@@ -31,17 +31,20 @@ namespace alloc
 			if(gli::is_compressed(Format) && gli::is_target_1d(Target))
 				continue;
 
-		for(std::size_t SizeIndex = 0; SizeIndex < Sizes.size(); ++SizeIndex)
-		{
-			gli::texture::extent_type Size(Sizes[SizeIndex]);
-			gli::texture TextureA(Target, Format, Size, 1, Faces, gli::levels(Size));
-			gli::texture TextureB(Target, Format, Size, 1, Faces, gli::levels(Size));
-			Error += (TextureA == TextureB) ? 0 : 1;
+			for(std::size_t SizeIndex = 0; SizeIndex < Sizes.size(); ++SizeIndex)
+			{
+				gli::texture::extent_type Size(Sizes[SizeIndex]);
+
+				gli::texture TextureA(Target, Format, Size, 1, Faces, gli::levels(Size));
+				gli::texture TextureB(Target, Format, Size, 1, Faces, gli::levels(Size));
+
+				Error += TextureA == TextureB ? 0 : 1;
+			}
 		}
 
 		return Error;
 	}
-}// namespace alloc
+}//namespace alloc
 
 namespace clear
 {
@@ -58,7 +61,7 @@ namespace clear
 
 		return Error;
 	}
-}// namespace clear
+}//namespace clear
 
 namespace query
 {
@@ -344,7 +347,7 @@ namespace data
 	{
 		int Error = 0;
 
-		gli::texture Texture(gli::TARGET_2D_ARRAY, gli::FORMAT_RGBA8_UNORM_PACK8, static_cast<gli::texture::extent_type>(1), 2, 1, 1);
+		gli::texture Texture(gli::TARGET_2D_ARRAY, gli::FORMAT_RGBA8_UNORM_PACK8, gli::texture::extent_type(1), 2, 1, 1);
 		Error += gli::texture2d_array(Texture)[0].data() == Texture.data(0, 0, 0) ? 0 : 1;
 		Error += gli::texture2d_array(Texture)[1].data() == Texture.data(1, 0, 0) ? 0 : 1;
 
@@ -550,7 +553,6 @@ namespace perf_cube_array_access
 				}
 			}
 
-
 			std::clock_t TimeEnd = std::clock();
 			std::cout << "Cube array texture all access performance test: " << TimeEnd - TimeBegin << std::endl;
 		}
@@ -744,14 +746,14 @@ namespace perf_texture_lod_nearest
 	int main(int Extent)
 	{
 		int Error = 0;
-		
+
 		gli::texture2d Texture(gli::FORMAT_R8_UNORM_PACK8, gli::texture2d::extent_type(Extent));
 		Texture.clear(gli::u8(255));
 
 		gli::sampler2d<float> Sampler(Texture, gli::WRAP_CLAMP_TO_EDGE, gli::FILTER_NEAREST, gli::FILTER_NEAREST);
 
 		std::clock_t TimeBegin = std::clock();
-		
+
 		for(gli::texture2d::size_type LevelIndex = 0, LevelCount = Texture.levels(); LevelIndex < LevelCount; ++LevelIndex)
 		{
 			gli::texture2d::extent_type const Extent = Texture.extent(LevelIndex);
@@ -806,7 +808,7 @@ namespace perf_generate_mipmaps_nearest
 	int main(int Extent)
 	{
 		int Error = 0;
-		
+
 		gli::texture2d TextureSource(gli::FORMAT_R8_UNORM_PACK8, gli::texture2d::extent_type(Extent));
 		TextureSource.clear(gli::u8(255));
 
@@ -847,7 +849,7 @@ int main()
 {
 	int Error = 0;
 
-	const bool DO_PERF_TEST = false;
+	bool const DO_PERF_TEST = false;
 
 	std::size_t const PERF_TEST_ACCESS_ITERATION = DO_PERF_TEST ? 100000 : 0;
 	std::size_t const PERF_TEST_CREATION_ITERATION = DO_PERF_TEST ? 1000 : 0;
