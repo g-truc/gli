@@ -25,7 +25,6 @@ namespace generate_mipmaps
 		// get texel at position #0 from top mipmap level
 		genType const LoadC = Texture.load<genType>(gli::texture2d::extent_type(0), Texture.max_level());
 
-
 		// If texture has multiple mipmap levels, texel from top level must match base color
 		if(Texture.levels() > 1)
 			Error += LoadC == Black ? 0 : 1;

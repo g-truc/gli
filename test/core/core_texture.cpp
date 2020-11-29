@@ -371,6 +371,7 @@ namespace perf_generic_creation
 		}
 
 		std::clock_t TimeEnd = std::clock();
+
 		std::cout << "Generic texture creation performance test: " << TimeEnd - TimeBegin << std::endl;
 
 		return Error;
@@ -393,6 +394,7 @@ namespace perf_2d_array_creation
 		}
 
 		std::clock_t TimeEnd = std::clock();
+
 		std::cout << "2D array texture creation performance test: " << TimeEnd - TimeBegin << std::endl;
 
 		return Error;
@@ -415,6 +417,7 @@ namespace perf_2d_creation
 		}
 
 		std::clock_t TimeEnd = std::clock();
+
 		std::cout << "2D texture creation performance test: " << TimeEnd - TimeBegin << std::endl;
 
 		return Error;
@@ -437,6 +440,7 @@ namespace perf_cube_array_creation
 		}
 
 		std::clock_t TimeEnd = std::clock();
+
 		std::cout << "Cube array texture creation performance test: " << TimeEnd - TimeBegin << std::endl;
 
 		return Error;
@@ -471,6 +475,7 @@ namespace perf_cube_array_access
 			}
 
 			std::clock_t TimeEnd = std::clock();
+
 			std::cout << "Cube array texture data access performance test: " << TimeEnd - TimeBegin << std::endl;
 		}
 
@@ -489,12 +494,13 @@ namespace perf_cube_array_access
 			}
 
 			std::clock_t TimeEnd = std::clock();
+
 			std::cout << "Cube array texture size performance test: " << TimeEnd - TimeBegin << std::endl;
 		}
 
 		{
 			std::clock_t TimeBegin = std::clock();
-			
+
 			for(gli::size_t Index = 0, Count = Iterations; Index < Count; ++Index)
 			for(std::size_t FormatIndex = gli::FORMAT_FIRST, FormatCount = gli::FORMAT_COUNT; FormatIndex < FormatCount; ++FormatIndex)
 			{
@@ -508,12 +514,13 @@ namespace perf_cube_array_access
 			}
 
 			std::clock_t TimeEnd = std::clock();
+
 			std::cout << "Cube array texture extent access performance test: " << TimeEnd - TimeBegin << std::endl;
 		}
 
 		{
 			std::clock_t TimeBegin = std::clock();
-			
+
 			for(gli::size_t Index = 0, Count = Iterations; Index < Count; ++Index)
 			for(std::size_t FormatIndex = gli::FORMAT_FIRST, FormatCount = gli::FORMAT_COUNT; FormatIndex < FormatCount; ++FormatIndex)
 			{
@@ -530,12 +537,13 @@ namespace perf_cube_array_access
 			}
 
 			std::clock_t TimeEnd = std::clock();
+
 			std::cout << "Cube array texture extent and size access performance test: " << TimeEnd - TimeBegin << std::endl;
 		}
 
 		{
 			std::clock_t TimeBegin = std::clock();
-			
+
 			for(gli::size_t Index = 0, Count = Iterations; Index < Count; ++Index)
 			for(std::size_t FormatIndex = gli::FORMAT_FIRST, FormatCount = gli::FORMAT_COUNT; FormatIndex < FormatCount; ++FormatIndex)
 			{
@@ -554,6 +562,7 @@ namespace perf_cube_array_access
 			}
 
 			std::clock_t TimeEnd = std::clock();
+
 			std::cout << "Cube array texture all access performance test: " << TimeEnd - TimeBegin << std::endl;
 		}
 
@@ -589,6 +598,7 @@ namespace perf_texture2d_access
 			}
 
 			std::clock_t TimeEnd = std::clock();
+
 			std::cout << "2d texture data access performance test: " << TimeEnd - TimeBegin << std::endl;
 		}
 
@@ -607,6 +617,7 @@ namespace perf_texture2d_access
 			}
 
 			std::clock_t TimeEnd = std::clock();
+
 			std::cout << "2d texture size performance test: " << TimeEnd - TimeBegin << std::endl;
 		}
 
@@ -626,6 +637,7 @@ namespace perf_texture2d_access
 			}
 
 			std::clock_t TimeEnd = std::clock();
+
 			std::cout << "2d texture extent access performance test: " << TimeEnd - TimeBegin << std::endl;
 		}
 
@@ -648,13 +660,13 @@ namespace perf_texture2d_access
 			}
 
 			std::clock_t TimeEnd = std::clock();
+
 			std::cout << "2d texture extent and size access performance test: " << TimeEnd - TimeBegin << std::endl;
 		}
 
 		{
 			std::clock_t TimeBegin = std::clock();
 
-			
 			for(gli::size_t Index = 0, Count = Iterations; Index < Count; ++Index)
 			for(std::size_t FormatIndex = gli::FORMAT_FIRST, FormatCount = gli::FORMAT_COUNT; FormatIndex < FormatCount; ++FormatIndex)
 			{
@@ -673,6 +685,7 @@ namespace perf_texture2d_access
 			}
 
 			std::clock_t TimeEnd = std::clock();
+
 			std::cout << "2d texture all access performance test: " << TimeEnd - TimeBegin << std::endl;
 		}
 
@@ -690,7 +703,7 @@ namespace perf_texture_load
 		Texture.clear(gli::u8(255));
 
 		std::clock_t TimeBegin = std::clock();
-		
+
 		for(gli::texture2d::size_type LevelIndex = 0, LevelCount = Texture.levels(); LevelIndex < LevelCount; ++LevelIndex)
 		{
 			gli::texture2d::extent_type const Extent = Texture.extent(LevelIndex);
@@ -703,6 +716,7 @@ namespace perf_texture_load
 		}
 
 		std::clock_t TimeEnd = std::clock();
+
 		std::cout << "2D texture load performance test: " << TimeEnd - TimeBegin << std::endl;
 
 		return Error;
@@ -735,6 +749,7 @@ namespace perf_texture_fetch
 		}
 
 		std::clock_t TimeEnd = std::clock();
+
 		std::cout << "2D texture fetch performance test: " << TimeEnd - TimeBegin << std::endl;
 
 		return Error;
@@ -766,6 +781,7 @@ namespace perf_texture_lod_nearest
 		}
 
 		std::clock_t TimeEnd = std::clock();
+
 		std::cout << "2D texture lod nearest performance test: " << TimeEnd - TimeBegin << std::endl;
 
 		return Error;
@@ -797,6 +813,7 @@ namespace perf_texture_lod_linear
 		}
 
 		std::clock_t TimeEnd = std::clock();
+
 		std::cout << "2D texture lod linear performance test: " << TimeEnd - TimeBegin << std::endl;
 
 		return Error;
@@ -818,6 +835,7 @@ namespace perf_generate_mipmaps_nearest
 		Error = (*TextureMipmaps.data<glm::u8>(0, 0, TextureMipmaps.max_level()) == gli::u8(255)) ? 0 : 1;
 
 		std::clock_t TimeEnd = std::clock();
+
 		std::cout << "2D texture generate mipmaps nearest performance test: " << TimeEnd - TimeBegin << std::endl;
 
 		return Error;
@@ -839,6 +857,7 @@ namespace perf_generate_mipmaps_linear
 		Error = (*TextureMipmaps.data<glm::u8>(0, 0, TextureMipmaps.max_level()) == gli::u8(255)) ? 0 : 1;
 
 		std::clock_t TimeEnd = std::clock();
+
 		std::cout << "2D texture generate mipmaps linear performance test: " << TimeEnd - TimeBegin << std::endl;
 
 		return Error;

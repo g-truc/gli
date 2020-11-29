@@ -147,7 +147,7 @@ int test_texture2D
 
 		gli::texture2d TextureE(gli::duplicate(TextureA, 1, TextureA.levels() - 1));
 		Error += (TextureA[1] == TextureE[0]) ? 0 : 1;
-		
+
 		gli::texture2d TextureF(gli::view(
 			TextureA, 1, TextureA.levels() - 1));
 
@@ -165,14 +165,13 @@ int test_texture2DArray
 {
 	int Error = 0;
 
-	
 	for(std::size_t i = 0; i < Formats.size(); ++i)
 	{
 		gli::texture2d_array TextureA(
 			Formats[i],
 			TextureSize,
 			gli::texture2d_array::size_type(4));
-		
+
 		gli::texture2d_array TextureB(gli::duplicate(TextureA));
 
 		Error += (TextureA == TextureB) ? 0 : 1;
@@ -273,7 +272,6 @@ int test_textureCube
 )
 {
 	int Error = 0;
-
 	
 	for(std::size_t i = 0; i < Formats.size(); ++i)
 	{
