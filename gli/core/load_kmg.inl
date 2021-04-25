@@ -52,6 +52,7 @@ namespace detail
 
 				Offset += FaceSize;
 				GLI_ASSERT(Offset <= Size);
+				(void)Size;
 			}
 		}
 

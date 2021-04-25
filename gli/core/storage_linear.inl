@@ -110,6 +110,7 @@ namespace gli
 	inline storage_linear::size_type storage_linear::image_offset(extent1d const& Coord, extent1d const& Extent) const
 	{
 		GLI_ASSERT(glm::all(glm::lessThan(Coord, Extent)));
+	    (void)Extent;
 		return static_cast<size_t>(Coord.x);
 	}
 

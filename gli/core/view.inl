@@ -139,6 +139,7 @@ namespace gli
 		GLI_ASSERT(!Texture.empty());
 		GLI_ASSERT(BaseLevel >= 0 && BaseLevel < Texture.levels() && MaxLevel >= 0 && MaxLevel < Texture.levels() && BaseLevel <= MaxLevel);
 		GLI_ASSERT(BaseFace >= 0 && BaseFace < Texture.faces() && MaxFace >= 0 && MaxFace < Texture.faces() && BaseFace <= MaxFace);
+		(void)BaseFace;
 
 		return texture(
 			Texture, TARGET_CUBE, Texture.format(),

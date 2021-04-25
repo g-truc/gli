@@ -8,6 +8,7 @@ namespace detail
 	)
 	{
 		GLI_ASSERT(glm::all(glm::lessThan(TexelCoord, Extent)));
+	    (void)Extent;
 
 		return static_cast<size_t>(TexelCoord.x);
 	}
@@ -44,6 +45,7 @@ namespace detail
 	)
 	{
 		GLI_ASSERT(TexelCoord.x < Extent.x);
+	    (void)Extent;
 
 		return TexelCoord.x;
 	}
@@ -56,6 +58,7 @@ namespace detail
 	{
 		GLI_ASSERT(TexelCoord.x < Extent.x && TexelCoord.x >= 0 && TexelCoord.x < std::numeric_limits<extent2d::value_type>::max());
 		GLI_ASSERT(TexelCoord.y < Extent.y && TexelCoord.y >= 0 && TexelCoord.y < std::numeric_limits<extent2d::value_type>::max());
+		(void)Extent;
 
 		glm::u32vec2 const Input(TexelCoord);
 
@@ -71,6 +74,7 @@ namespace detail
 		GLI_ASSERT(TexelCoord.x < Extent.x);
 		GLI_ASSERT(TexelCoord.y < Extent.y);
 		GLI_ASSERT(TexelCoord.z < Extent.z);
+		(void)Extent;
 
 		glm::u32vec3 const Input(TexelCoord);
 

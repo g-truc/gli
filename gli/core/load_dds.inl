@@ -169,6 +169,7 @@ namespace detail
 		std::size_t Offset = sizeof(detail::FOURCC_DDS);
 
 		GLI_ASSERT(Size >= sizeof(detail::dds_header));
+		(void)Size;
 
 		detail::dds_header const & Header(*reinterpret_cast<detail::dds_header const *>(Data + Offset));
 		Offset += sizeof(detail::dds_header);

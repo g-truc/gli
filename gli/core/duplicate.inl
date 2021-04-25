@@ -222,6 +222,7 @@ namespace detail
 		GLI_ASSERT(BaseFace <= MaxFace);
 		GLI_ASSERT(BaseFace < Texture.faces());
 		GLI_ASSERT(MaxFace < Texture.faces());
+		(void)MaxFace;
 
 		texture_cube Duplicate(
 			Texture.format(),
@@ -251,6 +252,7 @@ namespace detail
 		GLI_ASSERT(BaseLayer <= MaxLayer);
 		GLI_ASSERT(BaseLayer < Texture.layers());
 		GLI_ASSERT(MaxLayer < Texture.layers());
+		(void)MaxFace;
 
 		texture_cube_array Duplicate(
 			Texture.format(),
