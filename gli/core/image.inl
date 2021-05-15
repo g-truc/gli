@@ -103,11 +103,11 @@ namespace detail
 		format_type Format,
 		size_type BaseLayer,
 		size_type BaseFace,
-		size_type BaseLevel
+		size_type _BaseLevel
 	)
 		: Storage(Storage)
 		, Format(Format)
-		, BaseLevel(BaseLevel)
+		, BaseLevel(_BaseLevel)
 		, Data(compute_data(BaseLayer, BaseFace, BaseLevel))
 		, Size(compute_size(BaseLevel))
 	{}
@@ -213,9 +213,9 @@ namespace detail
 			*(this->data<genType>() + TexelIndex) = Texel;
 	}
 
-	inline image::data_type* image::compute_data(size_type BaseLayer, size_type BaseFace, size_type BaseLevel)
+	inline image::data_type* image::compute_data(size_type BaseLayer, size_type BaseFace, size_type _BaseLevel)
 	{
-		size_type const BaseOffset = this->Storage->base_offset(BaseLayer, BaseFace, BaseLevel);
+		size_type const BaseOffset = this->Storage->base_offset(BaseLayer, BaseFace, _BaseLevel);
 
 		return this->Storage->data() + BaseOffset;
 	}
