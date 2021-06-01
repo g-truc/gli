@@ -283,7 +283,7 @@ namespace detail
 		GLI_ASSERT(Format != FORMAT_UNDEFINED);
 
 		return Table[Format - FORMAT_FIRST];
-	};
+	}
 
 	inline std::uint32_t bits_per_pixel(format Format)
 	{
