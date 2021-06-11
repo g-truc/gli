@@ -95,7 +95,7 @@ namespace detail
 		Header.Format.bpp = static_cast<std::uint32_t>(detail::bits_per_pixel(Texture.format()));
 		Header.Format.Mask = DXFormat.Mask;
 		//Header.surfaceFlags = detail::DDSCAPS_TEXTURE | (Storage.levels() > 1 ? detail::DDSCAPS_MIPMAP : 0);
-		Header.SurfaceFlags = detail::DDSCAPS_TEXTURE | detail::DDSCAPS_MIPMAP;
+		Header.SurfaceFlags = detail::DDSCAPS_TEXTURE | detail::DDSCAPS_MIPMAP | detail::DDSCAPS_COMPLEX;
 		Header.CubemapFlags = 0;
 
 		// Cubemap
