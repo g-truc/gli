@@ -16,6 +16,7 @@ namespace detail
 		{
 			void const* PointerA = TextureA.data(LayerIndex, FaceIndex, LevelIndex);
 			void const* PointerB = TextureB.data(LayerIndex, FaceIndex, LevelIndex);
+			GLI_ASSERT(TextureA.size(LevelIndex) == TextureB.size(LevelIndex));
 			if(std::memcmp(PointerA, PointerB, TextureA.size(LevelIndex)) != 0)
 				return false;
 		}

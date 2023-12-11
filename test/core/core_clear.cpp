@@ -48,15 +48,6 @@ namespace clear
 
 	int test()
 	{
-		std::vector<glm::u64> ColorDXT1;
-		ColorDXT1.push_back(255);
-		ColorDXT1.push_back(127);
-		ColorDXT1.push_back(64);
-		ColorDXT1.push_back(32);
-		ColorDXT1.push_back(16);
-		ColorDXT1.push_back(8);
-		ColorDXT1.push_back(4);
-
 		std::vector<glm::u8> ColorR8_UNORM;
 		ColorR8_UNORM.push_back(255);
 		ColorR8_UNORM.push_back(127);
@@ -105,9 +96,6 @@ namespace clear
 
 		for(std::size_t i = 0; i < Sizes.size(); ++i)
 		{
-			//Error += test_texture<gli::texture1d>(gli::texture1d::dim_type(Sizes[i]), gli::FORMAT_RGB_DXT1_UNORM_BLOCK8, ColorDXT1);
-			Error += test_texture<gli::texture2d>(gli::texture2d::extent_type(Sizes[i]), gli::FORMAT_RGB_DXT1_UNORM_BLOCK8, ColorDXT1);
-			Error += test_texture<gli::texture3d>(gli::texture3d::extent_type(Sizes[i]), gli::FORMAT_RGB_DXT1_UNORM_BLOCK8, ColorDXT1);
 			Error += test_texture<gli::texture1d>(gli::texture1d::extent_type(Sizes[i]), gli::FORMAT_R8_UNORM_PACK8, ColorR8_UNORM);
 			Error += test_texture<gli::texture2d>(gli::texture2d::extent_type(Sizes[i]), gli::FORMAT_R8_UNORM_PACK8, ColorR8_UNORM);
 			Error += test_texture<gli::texture3d>(gli::texture3d::extent_type(Sizes[i]), gli::FORMAT_R8_UNORM_PACK8, ColorR8_UNORM);

@@ -14,18 +14,18 @@ namespace gli
 		typedef dxt5_block bc3_block;
 
 		struct bc4_block {
-			uint8_t Red0;
-			uint8_t Red1;
-			uint8_t Bitmap[6];
+			glm::uint8 Red0;
+			glm::uint8 Red1;
+			glm::uint8 Bitmap[6];
 		};
 
 		struct bc5_block {
-			uint8_t Red0;
-			uint8_t Red1;
-			uint8_t RedBitmap[6];
-			uint8_t Green0;
-			uint8_t Green1;
-			uint8_t GreenBitmap[6];
+			glm::uint8 Red0;
+			glm::uint8 Red1;
+			glm::uint8 RedBitmap[6];
+			glm::uint8 Green0;
+			glm::uint8 Green1;
+			glm::uint8 GreenBitmap[6];
 		};
 
 		glm::vec4 decompress_bc1(const bc1_block &Block, const extent2d &BlockTexelCoord);

@@ -1,7 +1,9 @@
 #include <gli/sampler2d.hpp>
+#include <gli/load.hpp>
+#include <gli/save.hpp>
 #include <gli/comparison.hpp>
 #include <glm/gtx/component_wise.hpp>
-#include <glm/gtc/epsilon.hpp>
+#include <glm/ext/vector_relational.hpp>
 #include <ctime>
 #include <limits>
 #include <array>
@@ -486,6 +488,30 @@ namespace fetch_rgba8_srgb
 	}
 }//namespace fetch_rgba8_srgb
 
+namespace fetch_bc1
+{
+	int test()
+	{
+		int Error = 0;
+
+		gli::texture2d TextureLoad(gli::load_dds("kueken8_rgba_dxt1_unorm.dds"));
+		gli::texture2d TextureSave(gli::FORMAT_RGBA8_UNORM_PACK8, TextureLoad.extent(), 1);
+
+		gli::fsampler2D Sampler(TextureLoad, gli::WRAP_CLAMP_TO_EDGE, gli::FILTER_LINEAR, gli::FILTER_LINEAR, glm::vec4(0.0f, 0.5f, 1.0f, 1.0f));
+
+		for(glm::uint32_t j = 0, n = TextureLoad.extent().y; j < n; ++j)
+		for(glm::uint32_t i = 0, m = TextureLoad.extent().x; i < m; ++i)
+		{
+			glm::vec4 Data0 = Sampler.texel_fetch(gli::texture2d::extent_type(i, j), 0);
+			Sampler.texel_write(gli::texture2d::extent_type(i, j), 0, Data0);
+		}
+
+		gli::save_dds(TextureSave, "fetch_rgba_dxt1_unorm_to_rgba8_unorm.dds");
+
+		return Error;
+	}
+}//namespace fetch_bc1
+
 int main()
 {
 	int Error(0);
@@ -498,6 +524,7 @@ int main()
 	Error += fetch_rgb10a2_unorm::test();
 	Error += fetch_rgb10a2_snorm::test();
 	Error += fetch_rgb10a2_uint::test();
+	Error += fetch_bc1::test();
 
 	return Error;
 }

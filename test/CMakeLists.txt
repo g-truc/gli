@@ -19,10 +19,12 @@ function(glmCreateTestGTC NAME)
 	set(SAMPLE_NAME test-${NAME})
 	add_executable(${SAMPLE_NAME} ${NAME}.cpp)
 	target_link_libraries(${SAMPLE_NAME} gli)
-	add_test( 
+	add_test(
 		NAME ${SAMPLE_NAME}
 		COMMAND $<TARGET_FILE:${SAMPLE_NAME}> )
 endfunction()
 
-add_subdirectory(bug)
-add_subdirectory(core)
+if(GLI_TEST_ENABLE)
+	add_subdirectory(bug)
+	add_subdirectory(core)
+endif()

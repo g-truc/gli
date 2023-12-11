@@ -183,7 +183,7 @@ namespace detail
 		dx DX;
 
 		gli::format Format(gli::FORMAT_UNDEFINED);
-		if((Header.Format.flags & (dx::DDPF_RGB | dx::DDPF_ALPHAPIXELS | dx::DDPF_ALPHA | dx::DDPF_YUV | dx::DDPF_LUMINANCE)) && Format == gli::FORMAT_UNDEFINED && Header.Format.bpp != 0)
+		if((Header.Format.flags & (dx::DDPF_RGB | dx::DDPF_ALPHAPIXELS | dx::DDPF_ALPHA | dx::DDPF_YUV | dx::DDPF_LUMINANCE)) && Format == gli::FORMAT_UNDEFINED && Header.Format.bpp > 0 && Header.Format.bpp < 64)
 		{
 			switch(Header.Format.bpp)
 			{

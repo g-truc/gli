@@ -19,7 +19,7 @@ namespace detail
 		}
 	}
 
-	inline void flip_block_s3tc(uint8_t* BlockDst, uint8_t* BlockSrc, format Format, bool HeightTwo)
+	inline void flip_block_s3tc(uint8* BlockDst, uint8* BlockSrc, format Format, bool HeightTwo)
 	{
 		// There is no distinction between RGB and RGBA in DXT-compressed textures,
 		// it is used only to tell OpenGL how to interpret the data.
@@ -159,7 +159,7 @@ namespace detail
 		if(ImageSrc.extent().y == 2)
 		{
 			for(std::size_t i_block = 0; i_block < XBlocks; ++i_block)
-				flip_block_s3tc(ImageDst.data<uint8_t>() + i_block * block_size(Format), ImageSrc.data<uint8_t>() + i_block * block_size(Format), Format, true);
+				flip_block_s3tc(ImageDst.data<uint8>() + i_block * block_size(Format), ImageSrc.data<uint8>() + i_block * block_size(Format), Format, true);
 
 			return;
 		}
@@ -167,7 +167,7 @@ namespace detail
 		std::size_t const MaxYBlock = ImageSrc.extent().y / 4 - 1;
 		for(std::size_t i_row = 0; i_row <= MaxYBlock; ++i_row)
 			for(std::size_t i_block = 0; i_block < XBlocks; ++i_block)
-				flip_block_s3tc(ImageDst.data<uint8_t>() + (MaxYBlock - i_row) * block_size(Format) * XBlocks + i_block * block_size(Format), ImageSrc.data<uint8_t>() + i_row * block_size(Format) * XBlocks + i_block * block_size(Format), Format, false);
+				flip_block_s3tc(ImageDst.data<uint8>() + (MaxYBlock - i_row) * block_size(Format) * XBlocks + i_block * block_size(Format), ImageSrc.data<uint8>() + i_row * block_size(Format) * XBlocks + i_block * block_size(Format), Format, false);
 	}
 
 }//namespace detail
