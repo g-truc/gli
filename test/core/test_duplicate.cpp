@@ -391,8 +391,7 @@ int main()
 {
 	int Error(0);
 
-	const int levels = gli::levels(1600);
-
+	// const int levels = gli::levels(1600);
 
 
 	std::vector<gli::format> FormatsA;

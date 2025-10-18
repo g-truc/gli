@@ -372,7 +372,7 @@ namespace perf_generic_creation
 		}
 
 		std::clock_t TimeEnd = std::clock();
-		printf("Generic texture creation performance test: %d\n", TimeEnd - TimeBegin);
+		printf("Generic texture creation performance test: %f\n", difftime(TimeEnd, TimeBegin));
 
 		return Error;
 	}
@@ -394,7 +394,7 @@ namespace perf_2d_array_creation
 		}
 
 		std::clock_t TimeEnd = std::clock();
-		printf("2D array texture creation performance test: %d\n", TimeEnd - TimeBegin);
+		printf("2D array texture creation performance test: %f\n", difftime(TimeEnd, TimeBegin));
 
 		return Error;
 	}
@@ -416,7 +416,7 @@ namespace perf_2d_creation
 		}
 
 		std::clock_t TimeEnd = std::clock();
-		printf("2D texture creation performance test: %d\n", TimeEnd - TimeBegin);
+		printf("2D texture creation performance test: %f\n", difftime(TimeEnd, TimeBegin));
 
 		return Error;
 	}
@@ -438,7 +438,7 @@ namespace perf_cube_array_creation
 		}
 
 		std::clock_t TimeEnd = std::clock();
-		printf("Cube array texture creation performance test: %d\n", TimeEnd - TimeBegin);
+		printf("Cube array texture creation performance test: %f\n", difftime(TimeEnd, TimeBegin));
 
 		return Error;
 	}
@@ -473,7 +473,7 @@ namespace perf_cube_array_access
 
 			std::clock_t TimeEnd = std::clock();
 
-			printf("Cube array texture data access performance test: %d\n", TimeEnd - TimeBegin);
+			printf("Cube array texture data access performance test: %f\n", difftime(TimeEnd, TimeBegin));
 		}
 
 		{
@@ -492,7 +492,7 @@ namespace perf_cube_array_access
 
 			std::clock_t TimeEnd = std::clock();
 
-			printf("Cube array texture size performance test: %d\n", TimeEnd - TimeBegin);
+			printf("Cube array texture size performance test: %f\n", difftime(TimeEnd, TimeBegin));
 		}
 
 		{
@@ -512,7 +512,7 @@ namespace perf_cube_array_access
 
 			std::clock_t TimeEnd = std::clock();
 
-			printf("Cube array texture extent access performance test: %d\n", TimeEnd - TimeBegin);
+			printf("Cube array texture extent access performance test: %f\n", difftime(TimeEnd, TimeBegin));
 		}
 
 		{
@@ -535,7 +535,7 @@ namespace perf_cube_array_access
 
 			std::clock_t TimeEnd = std::clock();
 
-			printf("Cube array texture extent and size access performance test: %d\n", TimeEnd - TimeBegin);
+			printf("Cube array texture extent and size access performance test: %f\n", difftime(TimeEnd, TimeBegin));
 		}
 
 		{
@@ -560,7 +560,7 @@ namespace perf_cube_array_access
 
 			std::clock_t TimeEnd = std::clock();
 
-			printf("Cube array texture all access performance test: %d\n", TimeEnd - TimeBegin);
+			printf("Cube array texture all access performance test: %f\n", difftime(TimeEnd, TimeBegin));
 		}
 
 		return Error;
@@ -596,7 +596,7 @@ namespace perf_texture2d_access
 
 			std::clock_t TimeEnd = std::clock();
 
-			printf("2d texture data access performance test: %d\n", TimeEnd - TimeBegin);
+			printf("2d texture data access performance test: %f\n", difftime(TimeEnd, TimeBegin));
 		}
 
 		{
@@ -615,7 +615,7 @@ namespace perf_texture2d_access
 
 			std::clock_t TimeEnd = std::clock();
 
-			printf("2d texture size performance test: %d\n", TimeEnd - TimeBegin);
+			printf("2d texture size performance test: %f\n", difftime(TimeEnd, TimeBegin));
 		}
 
 		{
@@ -635,7 +635,7 @@ namespace perf_texture2d_access
 
 			std::clock_t TimeEnd = std::clock();
 
-			printf("2d texture extent access performance test: %d\n", TimeEnd - TimeBegin);
+			printf("2d texture extent access performance test: %f\n", difftime(TimeEnd, TimeBegin));
 		}
 
 		{
@@ -658,7 +658,7 @@ namespace perf_texture2d_access
 
 			std::clock_t TimeEnd = std::clock();
 
-			printf("2d texture extent and size access performance test: %d\n", TimeEnd - TimeBegin);
+			printf("2d texture extent and size access performance test: %f\n", difftime(TimeEnd, TimeBegin));
 		}
 
 		{
@@ -683,7 +683,7 @@ namespace perf_texture2d_access
 
 			std::clock_t TimeEnd = std::clock();
 
-			printf("2d texture all access performance test: %d\n", TimeEnd - TimeBegin);
+			printf("2d texture all access performance test: %f\n", difftime(TimeEnd, TimeBegin));
 		}
 
 		return Error;
@@ -704,8 +704,8 @@ namespace perf_texture_load
 		for(gli::texture2d::size_type LevelIndex = 0, LevelCount = Texture.levels(); LevelIndex < LevelCount; ++LevelIndex)
 		{
 			gli::texture2d::extent_type const Extent = Texture.extent(LevelIndex);
-			for(gli::size_t y = 0; y < Extent.y; ++y)
-			for(gli::size_t x = 0; x < Extent.x; ++x)
+			for(int y = 0; y < Extent.y; ++y)
+			for(int x = 0; x < Extent.x; ++x)
 			{
 				gli::u8 Texel = Texture.load<gli::u8>(gli::texture2d::extent_type(x, y), LevelIndex);
 				Error += Texel == gli::u8(255) ? 0 : 1;
@@ -713,7 +713,7 @@ namespace perf_texture_load
 		}
 
 		std::clock_t TimeEnd = std::clock();
-		printf("2D texture load performance test: %d\n", TimeEnd - TimeBegin);
+		printf("2D texture load performance test: %f\n", difftime(TimeEnd, TimeBegin));
 
 		return Error;
 	}
@@ -735,8 +735,8 @@ namespace perf_texture_fetch
 		for(gli::texture2d::size_type LevelIndex = 0, LevelCount = Texture.levels(); LevelIndex < LevelCount; ++LevelIndex)
 		{
 			gli::texture2d::extent_type const Extent = Texture.extent(LevelIndex);
-			for(gli::size_t y = 0; y < Extent.y; ++y)
-			for(gli::size_t x = 0; x < Extent.x; ++x)
+			for(int y = 0; y < Extent.y; ++y)
+			for(int x = 0; x < Extent.x; ++x)
 			{
 				gli::vec4 const& Texel = Sampler.texel_fetch(gli::texture2d::extent_type(x, y), LevelIndex);
 				Error += gli::all(gli::epsilonEqual(Texel, gli::vec4(1, 0, 0, 1), 0.001f)) ? 0 : 1;
@@ -745,7 +745,7 @@ namespace perf_texture_fetch
 		}
 
 		std::clock_t TimeEnd = std::clock();
-		printf("2D texture fetch performance test: %d\n", TimeEnd - TimeBegin);
+		printf("2D texture fetch performance test: %f\n", difftime(TimeEnd, TimeBegin));
 
 		return Error;
 	}
@@ -767,8 +767,8 @@ namespace perf_texture_lod_nearest
 		for(gli::texture2d::size_type LevelIndex = 0, LevelCount = Texture.levels(); LevelIndex < LevelCount; ++LevelIndex)
 		{
 			gli::texture2d::extent_type const Extent = Texture.extent(LevelIndex);
-			for(gli::size_t y = 0; y < Extent.y; ++y)
-			for(gli::size_t x = 0; x < Extent.x; ++x)
+			for(int y = 0; y < Extent.y; ++y)
+			for(int x = 0; x < Extent.x; ++x)
 			{
 				gli::vec4 const& Texel = Sampler.texture_lod(glm::vec2(x, y) / glm::vec2(Extent), static_cast<float>(LevelIndex));
 				Error += gli::all(gli::epsilonEqual(Texel, gli::vec4(1, 0, 0, 1), 0.001f)) ? 0 : 1;
@@ -776,7 +776,7 @@ namespace perf_texture_lod_nearest
 		}
 
 		std::clock_t TimeEnd = std::clock();
-		printf("2D texture lod nearest performance test: %d\n", TimeEnd - TimeBegin);
+		printf("2D texture lod nearest performance test: %f\n", difftime(TimeEnd, TimeBegin));
 
 		return Error;
 	}
@@ -798,8 +798,8 @@ namespace perf_texture_lod_linear
 		for(gli::texture2d::size_type LevelIndex = 0, LevelCount = Texture.levels(); LevelIndex < LevelCount; ++LevelIndex)
 		{
 			gli::texture2d::extent_type const Extent = Texture.extent(LevelIndex);
-			for(gli::size_t y = 0; y < Extent.y; ++y)
-			for(gli::size_t x = 0; x < Extent.x; ++x)
+			for(int y = 0; y < Extent.y; ++y)
+			for(int x = 0; x < Extent.x; ++x)
 			{
 				gli::vec4 const& Texel = Sampler.texture_lod(glm::vec2(x, y) / glm::vec2(Extent), static_cast<float>(LevelIndex));
 				Error += gli::all(gli::epsilonEqual(Texel, gli::vec4(1, 0, 0, 1), 0.001f)) ? 0 : 1;
@@ -807,7 +807,7 @@ namespace perf_texture_lod_linear
 		}
 
 		std::clock_t TimeEnd = std::clock();
-		printf("2D texture lod linear performance test: %d\n", TimeEnd - TimeBegin);
+		printf("2D texture lod linear performance test: %f\n", difftime(TimeEnd, TimeBegin));
 
 		return Error;
 	}
@@ -829,7 +829,7 @@ namespace perf_generate_mipmaps_nearest
 
 		std::clock_t TimeEnd = std::clock();
 
-		printf("2D texture generate mipmaps nearest performance test: %d\n", TimeEnd - TimeBegin);
+		printf("2D texture generate mipmaps nearest performance test: %f\n", difftime(TimeEnd, TimeBegin));
 
 		return Error;
 	}
@@ -851,7 +851,7 @@ namespace perf_generate_mipmaps_linear
 
 		std::clock_t TimeEnd = std::clock();
 
-		printf("2D texture generate mipmaps linear performance test: %d\n", TimeEnd - TimeBegin);
+		printf("2D texture generate mipmaps linear performance test: %f\n", difftime(TimeEnd, TimeBegin));
 
 		return Error;
 	}

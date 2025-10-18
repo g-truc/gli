@@ -73,7 +73,7 @@ namespace texture_lod
 			Error += gli::all(glm::equal(SampleC, gli::vec4(0.0f, 0.0f, 0.0f, 1.0f), 0.01f)) ? 0 : 1;
 
 			gli::vec4 const SampleD = Sampler.texture_grad(gli::fsampler2D::normalized_type(0.25f), gli::fsampler2D::normalized_type(0.0f), gli::fsampler2D::normalized_type(0.0f));
-			Error += gli::all(glm::equal(SampleA, gli::vec4(1.0f, 0.5f, 0.0f, 1.0f), 0.01f)) ? 0 : 1;
+			Error += gli::all(glm::equal(SampleD, gli::vec4(1.0f, 0.5f, 0.0f, 1.0f), 0.01f)) ? 0 : 1;
 		}
 
 		return Error;

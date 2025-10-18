@@ -332,7 +332,7 @@ namespace rgba_dxt1unorm
 		
 			// Test converting through the convertFunc interface
 			// sampling at the corners of each level
-			for(int Level = 0; Level < TextureDecompressed.levels(); ++Level)
+			for(gli::texture::size_type Level = 0; Level < TextureDecompressed.levels(); ++Level)
 			{
 				gli::extent2d TexelCoord;
 				gli::extent2d LevelExtent = TextureDecompressed.extent(Level);
@@ -425,7 +425,7 @@ namespace rgba_dxt3unorm
 
 			// Test converting through the convertFunc interface
 			// sampling at the corners of each level
-			for(int Level = 0; Level < TextureDecompressed.levels(); ++Level)
+			for(gli::texture::size_type Level = 0; Level < TextureDecompressed.levels(); ++Level)
 			{
 				gli::extent2d TexelCoord;
 				gli::extent2d LevelExtent = TextureDecompressed.extent(Level);
@@ -518,7 +518,7 @@ namespace rgba_dxt5unorm
 
 			// Test converting through the convertFunc interface
 			// sampling at the corners of each level
-			for(int Level = 0; Level < TextureDecompressed.levels(); ++Level)
+			for(gli::texture::size_type Level = 0; Level < TextureDecompressed.levels(); ++Level)
 			{
 				gli::extent2d TexelCoord;
 				gli::extent2d LevelExtent = TextureDecompressed.extent(Level);
@@ -612,7 +612,7 @@ namespace r_bc4unorm
 
 			// Test converting through the convertFunc interface
 			// sampling at the corners of each level
-			for(int Level = 0; Level < TextureDecompressed.levels(); ++Level)
+			for(gli::texture::size_type Level = 0; Level < TextureDecompressed.levels(); ++Level)
 			{
 				gli::extent2d TexelCoord;
 				gli::extent2d LevelExtent = TextureDecompressed.extent(Level);
@@ -680,7 +680,7 @@ namespace rg_bc5unorm
 			uint32_t offByAlot = 0;
 			uint32_t onPoint = 0;
 
-			for(size_t Level = 0; Level < TextureCompressed.levels(); ++Level)
+			for(gli::texture::size_type Level = 0; Level < TextureCompressed.levels(); ++Level)
 			{
 				gli::extent2d TexelCoord;
 				gli::extent2d BlockCoord;
@@ -724,7 +724,7 @@ namespace rg_bc5unorm
 
 			// Test converting through the convertFunc interface
 			// sampling at the corners of each level
-			for(int Level = 0; Level < TextureDecompressed.levels(); ++Level)
+			for(gli::texture::size_type Level = 0; Level < TextureDecompressed.levels(); ++Level)
 			{
 				gli::extent2d TexelCoord;
 				gli::extent2d LevelExtent = TextureDecompressed.extent(Level);

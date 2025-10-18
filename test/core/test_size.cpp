@@ -148,9 +148,8 @@ namespace can_compute_npot_texture_size
 		}
 
 		{
-			gli::texture::extent_type const BlockCountA = glm::max(gli::texture::extent_type(5, 5, 1) / gli::block_extent(gli::FORMAT_RGB_DXT1_UNORM_BLOCK8), gli::texture::extent_type(1));
-
-			gli::texture::extent_type const BlockCountB = glm::ceilMultiple(gli::texture::extent_type(5, 5, 1), gli::block_extent(gli::FORMAT_RGB_DXT1_UNORM_BLOCK8)) / gli::block_extent(gli::FORMAT_RGB_DXT1_UNORM_BLOCK8);
+			glm::max(gli::texture::extent_type(5, 5, 1) / gli::block_extent(gli::FORMAT_RGB_DXT1_UNORM_BLOCK8), gli::texture::extent_type(1)); // BlockCountA
+			glm::ceilMultiple(gli::texture::extent_type(5, 5, 1), gli::block_extent(gli::FORMAT_RGB_DXT1_UNORM_BLOCK8)) / gli::block_extent(gli::FORMAT_RGB_DXT1_UNORM_BLOCK8); // BlockCountB
 		}
 
 		{

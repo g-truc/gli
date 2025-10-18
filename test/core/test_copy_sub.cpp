@@ -17,8 +17,8 @@ int test_sub_copy()
 	Destination.clear(gli::u8(255));
 
 	Destination.copy(Source, 0, 0, 0, gli::texture::extent_type(1, 1, 0), 0, 0, 0, gli::texture::extent_type(1, 1, 0), gli::texture::extent_type(2, 2, 1));
-	for(gli::size_t IndexY = 1; IndexY < 3; ++IndexY)
-	for(gli::size_t IndexX = 1; IndexX < 3; ++IndexX)
+	for(int IndexY = 1; IndexY < 3; ++IndexY)
+	for(int IndexX = 1; IndexX < 3; ++IndexX)
 		Error += Source.load<gli::u8>(gli::texture2d::extent_type(IndexX, IndexY), 0) == Destination.load<gli::u8>(gli::texture2d::extent_type(IndexX, IndexY), 0) ? 0 : 1;
 
 	return Error;
@@ -39,8 +39,8 @@ int test_sub_copy2()
 	Destination.clear(gli::u8(255));
 
 	Destination.copy(Source, 0, 0, 0, gli::texture::extent_type(1, 1, 0), 0, 0, 0, gli::texture::extent_type(1, 1, 0), gli::texture::extent_type(2, 2, 1));
-	for(gli::size_t IndexY = 0; IndexY < Source.extent().y; ++IndexY)
-	for(gli::size_t IndexX = 0; IndexX < Source.extent().x; ++IndexX)
+	for(int IndexY = 0; IndexY < Source.extent().y; ++IndexY)
+	for(int IndexX = 0; IndexX < Source.extent().x; ++IndexX)
 	{
 		gli::texture2d::extent_type TexelCoord(IndexX, IndexY);
 		gli::u8 TexelSrc = Source.load<gli::u8>(TexelCoord, 0);
@@ -63,8 +63,8 @@ int test_sub_copy_rgb32f()
 	Destination.clear(gli::vec3(255));
 
 	Destination.copy(Source, 0, 0, 0, gli::texture::extent_type(1, 1, 0), 0, 0, 0, gli::texture::extent_type(1, 1, 0), gli::texture::extent_type(2, 1, 1));
-	for(gli::size_t IndexY = 0; IndexY < Source.extent().y; ++IndexY)
-	for(gli::size_t IndexX = 0; IndexX < Source.extent().x; ++IndexX)
+	for(int IndexY = 0; IndexY < Source.extent().y; ++IndexY)
+	for(int IndexX = 0; IndexX < Source.extent().x; ++IndexX)
 	{
 		gli::texture2d::extent_type TexelCoord(IndexX, IndexY);
 		gli::vec3 TexelSrc = Source.load<gli::vec3>(TexelCoord, 0);
@@ -87,8 +87,8 @@ int test_sub_copy_rgba8()
 	Destination.clear(gli::u8vec4(255));
 
 	Destination.copy(Source, 0, 0, 0, gli::texture::extent_type(1, 1, 0), 0, 0, 0, gli::texture::extent_type(1, 1, 0), gli::texture::extent_type(2, 1, 1));
-	for(gli::size_t IndexY = 0; IndexY < Source.extent().y; ++IndexY)
-	for(gli::size_t IndexX = 0; IndexX < Source.extent().x; ++IndexX)
+	for(int IndexY = 0; IndexY < Source.extent().y; ++IndexY)
+	for(int IndexX = 0; IndexX < Source.extent().x; ++IndexX)
 	{
 		gli::texture2d::extent_type TexelCoord(IndexX, IndexY);
 		gli::u8vec4 TexelSrc = Source.load<gli::u8vec4>(TexelCoord, 0);
