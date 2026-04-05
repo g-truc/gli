@@ -50,8 +50,10 @@ namespace detail
 			return TARGET_2D;
 	}
 
-	inline texture load_ktx10(char const* Data, std::size_t Size)
+	inline texture load_ktx10(char const* Data, std::size_t Size )
 	{
+		(void)Size; // parameter unused
+
 		detail::ktx_header10 const & Header(*reinterpret_cast<detail::ktx_header10 const*>(Data));
 
 		size_t Offset = sizeof(detail::ktx_header10);

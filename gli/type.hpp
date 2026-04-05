@@ -28,6 +28,8 @@
 #	define GLI_ASSERT(test) assert((test))
 #endif
 
+#define GLI_UNUSED(x) (void)(x)
+
 namespace gli
 {
 	using namespace glm;

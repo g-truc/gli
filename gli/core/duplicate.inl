@@ -218,6 +218,7 @@ namespace detail
 		texture_cube::size_type BaseLevel, texture_cube::size_type MaxLevel
 	)
 	{
+		GLI_UNUSED(MaxFace);
 		GLI_ASSERT(BaseLevel >= 0 && BaseLevel < Texture.levels() && BaseLevel <= MaxLevel && MaxLevel < Texture.levels());
 		GLI_ASSERT(BaseFace <= MaxFace);
 		GLI_ASSERT(BaseFace < Texture.faces());
@@ -242,6 +243,7 @@ namespace detail
 		texture_cube_array::size_type BaseLevel, texture_cube_array::size_type MaxLevel
 	)
 	{
+		GLI_UNUSED(MaxFace);
 		GLI_ASSERT(BaseLevel <= MaxLevel);
 		GLI_ASSERT(BaseLevel < Texture.levels());
 		GLI_ASSERT(MaxLevel < Texture.levels());

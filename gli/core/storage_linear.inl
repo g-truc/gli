@@ -107,44 +107,45 @@ namespace gli
 		return BaseOffset;
 	}
 
-	inline storage_linear::size_type storage_linear::image_offset(extent1d const& Coord, extent1d const& Extent) const
+	inline storage_linear::size_type storage_linear::image_offset(extent1d const& Coord, extent1d const& Extent_) const
 	{
-		GLI_ASSERT(glm::all(glm::lessThan(Coord, Extent)));
+		GLI_UNUSED(Extent_);
+		GLI_ASSERT(glm::all(glm::lessThan(Coord, Extent_)));
 		return static_cast<size_t>(Coord.x);
 	}
 
-	inline storage_linear::size_type storage_linear::image_offset(extent2d const& Coord, extent2d const& Extent) const
+	inline storage_linear::size_type storage_linear::image_offset(extent2d const& Coord, extent2d const& Extent_) const
 	{
-		GLI_ASSERT(glm::all(glm::lessThan(Coord, Extent)));
-		return static_cast<size_t>(Coord.x + Coord.y * Extent.x);
+		GLI_ASSERT(glm::all(glm::lessThan(Coord, Extent_)));
+		return static_cast<size_t>(Coord.x + Coord.y * Extent_.x);
 	}
 
-	inline storage_linear::size_type storage_linear::image_offset(extent3d const& Coord, extent3d const& Extent) const
+	inline storage_linear::size_type storage_linear::image_offset(extent3d const& Coord, extent3d const& Extent_) const
 	{
-		GLI_ASSERT(glm::all(glm::lessThan(Coord, Extent)));
-		return static_cast<storage_linear::size_type>(Coord.x + Coord.y * Extent.x + Coord.z * Extent.x * Extent.y);
+		GLI_ASSERT(glm::all(glm::lessThan(Coord, Extent_)));
+		return static_cast<storage_linear::size_type>(Coord.x + Coord.y * Extent_.x + Coord.z * Extent_.x * Extent_.y);
 	}
 
 	inline void storage_linear::copy(
 		storage_linear const& StorageSrc,
 		size_t LayerSrc, size_t FaceSrc, size_t LevelSrc, extent_type const& BlockIndexSrc,
 		size_t LayerDst, size_t FaceDst, size_t LevelDst, extent_type const& BlockIndexDst,
-		extent_type const& BlockCount)
+		extent_type const& BlockCount_)
 	{
 		storage_linear::size_type const BaseOffsetSrc = StorageSrc.base_offset(LayerSrc, FaceSrc, LevelSrc);
 		storage_linear::size_type const BaseOffsetDst = this->base_offset(LayerDst, FaceDst, LevelDst);
 		storage_linear::data_type const* const ImageSrc = StorageSrc.data() + BaseOffsetSrc;
 		storage_linear::data_type* const ImageDst = this->data() + BaseOffsetDst;
 
-		for(size_t BlockIndexZ = 0, BlockCountZ = BlockCount.z; BlockIndexZ < BlockCountZ; ++BlockIndexZ)
-		for(size_t BlockIndexY = 0, BlockCountY = BlockCount.y; BlockIndexY < BlockCountY; ++BlockIndexY)
+		for(size_t BlockIndexZ = 0, BlockCountZ = BlockCount_.z; BlockIndexZ < BlockCountZ; ++BlockIndexZ)
+		for(size_t BlockIndexY = 0, BlockCountY = BlockCount_.y; BlockIndexY < BlockCountY; ++BlockIndexY)
 		{
 			extent_type const BlockIndex(0, BlockIndexY, BlockIndexZ);
 			gli::size_t const OffsetSrc = StorageSrc.image_offset(BlockIndexSrc + BlockIndex, StorageSrc.extent(LevelSrc)) * StorageSrc.block_size();
 			gli::size_t const OffsetDst = this->image_offset(BlockIndexDst + BlockIndex, this->extent(LevelDst)) * this->block_size();
 			storage_linear::data_type const* const DataSrc = ImageSrc + OffsetSrc;
 			storage_linear::data_type* DataDst = ImageDst + OffsetDst;
-			memcpy(DataDst, DataSrc, this->block_size() * BlockCount.x);
+			memcpy(DataDst, DataSrc, this->block_size() * BlockCount_.x);
 		}
 	}
 

@@ -327,13 +327,13 @@ namespace detail
 	{
 		GLI_ASSERT(Format >= FORMAT_FIRST && Format <= FORMAT_LAST);
 
-		gl::format_desc const& FormatDesc = this->FormatDesc[Format - FORMAT_FIRST];
+		gl::format_desc const& FormatDesc_ = this->FormatDesc[Format - FORMAT_FIRST];
 
 		gl::format FormatGL;
-		FormatGL.Internal = FormatDesc.Internal;
-		FormatGL.External = FormatDesc.External;
-		FormatGL.Type = FormatDesc.Type;
-		FormatGL.Swizzles = this->compute_swizzle(FormatDesc, Swizzles);
+		FormatGL.Internal = FormatDesc_.Internal;
+		FormatGL.External = FormatDesc_.External;
+		FormatGL.Type = FormatDesc_.Type;
+		FormatGL.Swizzles = this->compute_swizzle(FormatDesc_, Swizzles);
 		return FormatGL;
 	}
 
@@ -354,12 +354,12 @@ namespace detail
 		return gli::FORMAT_UNDEFINED;
 	}
 
-	inline gl::swizzles gl::compute_swizzle(format_desc const& FormatDesc, gli::swizzles const& Swizzles) const
+	inline gl::swizzles gl::compute_swizzle(format_desc const& FormatDesc_, gli::swizzles const& Swizzles) const
 	{
 		if (!this->has_swizzle(this->Profile))
 			return swizzles(gl::SWIZZLE_RED, gl::SWIZZLE_GREEN, gl::SWIZZLE_BLUE, gl::SWIZZLE_ALPHA);
 
-		bool const IsExternalBGRA = ((FormatDesc.Properties & detail::FORMAT_PROPERTY_BGRA_FORMAT_BIT) && !has_swizzle(this->Profile)) || (FormatDesc.Properties & detail::FORMAT_PROPERTY_BGRA_TYPE_BIT);
+		bool const IsExternalBGRA = ((FormatDesc_.Properties & detail::FORMAT_PROPERTY_BGRA_FORMAT_BIT) && !has_swizzle(this->Profile)) || (FormatDesc_.Properties & detail::FORMAT_PROPERTY_BGRA_TYPE_BIT);
 
 		return detail::translate(IsExternalBGRA ? gli::swizzles(Swizzles.b, Swizzles.g, Swizzles.r, Swizzles.a) : Swizzles);
 	}
