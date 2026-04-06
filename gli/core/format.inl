@@ -279,7 +279,7 @@ namespace detail
 			{  1, glm::u8vec3(1, 1, 1), 3, swizzles(SWIZZLE_RED, SWIZZLE_GREEN, SWIZZLE_BLUE, SWIZZLE_ONE), CAP_PACKED8_BIT | CAP_NORMALIZED_BIT | CAP_UNSIGNED_BIT | CAP_DDS_GLI_EXT_BIT},											//FORMAT_RG3B2_UNORM_PACK8,
 		};
 
-		GLM_STATIC_ASSERT(sizeof(Table) / sizeof(Table[0]) == FORMAT_COUNT, "GLI error: format descriptor list doesn't match number of supported formats");
+		static_assert( sizeof(Table) / sizeof(Table[0]) == FORMAT_COUNT, "GLI error: format descriptor list doesn't match number of supported formats" );
 		GLI_ASSERT(Format != FORMAT_UNDEFINED);
 
 		return Table[Format - FORMAT_FIRST];

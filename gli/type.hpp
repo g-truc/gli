@@ -40,27 +40,4 @@ namespace gli
 	typedef ivec3 extent3d;
 	typedef ivec4 extent4d;
 
-	template <typename T, qualifier P>
-	inline vec<4, T, P> make_vec4(vec<1, T, P> const & v)
-	{
-		return vec<4, T, P>(v.x, static_cast<T>(0), static_cast<T>(0), static_cast<T>(1));
-	}
-
-	template <typename T, qualifier P>
-	inline vec<4, T, P> make_vec4(vec<2, T, P> const & v)
-	{
-		return vec<4, T, P>(v.x, v.y, static_cast<T>(0), static_cast<T>(1));
-	}
-
-	template <typename T, qualifier P>
-	inline vec<4, T, P> make_vec4(vec<3, T, P> const & v)
-	{
-		return vec<4, T, P>(v.x, v.y, v.z, static_cast<T>(1));
-	}
-
-	template <typename T, qualifier P>
-	inline vec<4, T, P> make_vec4(vec<4, T, P> const & v)
-	{
-		return v;
-	}
-}//namespace gli
+} //namespace gli
