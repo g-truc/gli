@@ -176,7 +176,7 @@ namespace detail
 
 		static vec<4, retType, P> fetch(textureType const & Texture, typename textureType::extent_type const & TexelCoord, typename textureType::size_type Layer, typename textureType::size_type Face, typename textureType::size_type Level)
 		{
-			return make_vec4<retType, P>(vec<L, retType, P>(access::load(Texture, TexelCoord, Layer, Face, Level)));
+			return gli::make_vec4<retType, P>(vec<L, retType, P>(access::load(Texture, TexelCoord, Layer, Face, Level)));
 		}
 
 		static void write(textureType & Texture, typename textureType::extent_type const & TexelCoord, typename textureType::size_type Layer, typename textureType::size_type Face, typename textureType::size_type Level, vec<4, retType, P> const & Texel)
@@ -205,7 +205,7 @@ namespace detail
 		static vec<4, retType, P> fetch(textureType const & Texture, typename textureType::extent_type const & TexelCoord, typename textureType::size_type Layer, typename textureType::size_type Face, typename textureType::size_type Level)
 		{
 			static_assert(std::numeric_limits<retType>::is_iec559, "CONVERT_MODE_NORM requires a float sampler");
-			return make_vec4<retType, P>(compNormalize<retType>(access::load(Texture, TexelCoord, Layer, Face, Level)));
+			return gli::make_vec4<retType, P>(compNormalize<retType>(access::load(Texture, TexelCoord, Layer, Face, Level)));
 		}
 
 		static void write(textureType & Texture, typename textureType::extent_type const & TexelCoord, typename textureType::size_type Layer, typename textureType::size_type Face, typename textureType::size_type Level, vec<4, retType, P> const & Texel)
@@ -223,7 +223,7 @@ namespace detail
 		static vec<4, retType, P> fetch(textureType const & Texture, typename textureType::extent_type const & TexelCoord, typename textureType::size_type Layer, typename textureType::size_type Face, typename textureType::size_type Level)
 		{
 			static_assert(std::numeric_limits<retType>::is_iec559, "CONVERT_MODE_SRGB requires a float sampler");
-			return make_vec4<retType, P>(convertSRGBToLinear(compNormalize<retType>(access::load(Texture, TexelCoord, Layer, Face, Level))));
+			return gli::make_vec4<retType, P>(convertSRGBToLinear(compNormalize<retType>(access::load(Texture, TexelCoord, Layer, Face, Level))));
 		}
 
 		static void write(textureType & Texture, typename textureType::extent_type const & TexelCoord, typename textureType::size_type Layer, typename textureType::size_type Face, typename textureType::size_type Level, vec<4, retType, P> const & Texel)
@@ -277,7 +277,7 @@ namespace detail
 		static vec<4, retType, P> fetch(textureType const & Texture, typename textureType::extent_type const & TexelCoord, typename textureType::size_type Layer, typename textureType::size_type Face, typename textureType::size_type Level)
 		{
 			static_assert(std::numeric_limits<retType>::is_iec559, "CONVERT_MODE_HALF requires a float sampler");
-			return make_vec4<retType, P>(vec<L, retType, P>(unpackHalf(access::load(Texture, TexelCoord, Layer, Face, Level))));
+			return gli::make_vec4<retType, P>(vec<L, retType, P>(unpackHalf(access::load(Texture, TexelCoord, Layer, Face, Level))));
 		}
 
 		static void write(textureType & Texture, typename textureType::extent_type const & TexelCoord, typename textureType::size_type Layer, typename textureType::size_type Face, typename textureType::size_type Level, vec<4, retType, P> const & Texel)
