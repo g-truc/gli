@@ -116,12 +116,12 @@ namespace detail
 
 	GLM_FUNC_QUALIFIER glm::uint floatTo11bit(float x)
 	{
-		if(x == 0.0f)
+		if(x <= 0.0f) // 11bit floats have no sign (clamp to 0)
 			return 0u;
 		else if(glm::isnan(x))
-			return ~0u;
-		else if(glm::isinf(x))
-			return 0x1Fu << 6u;
+			return ~0u; // signaling nan
+		else if(glm::isinf(x) || x > 65024.0f)
+			return 0x1Fu << 6u; // infinity
 
 		uint Pack = 0u;
 		memcpy(&Pack, &x, sizeof(Pack));
@@ -130,12 +130,12 @@ namespace detail
 
 	GLM_FUNC_QUALIFIER float packed11bitToFloat(glm::uint x)
 	{
-		if(x == 0)
+		if(x == 0u)
 			return 0.0f;
 		else if(x == ((1 << 11) - 1))
-			return ~0;//NaN
+			return std::numeric_limits<float>::signaling_NaN();//NaN
 		else if(x == (0x1f << 6))
-			return ~0;//Inf
+			return std::numeric_limits<float>::infinity();//Inf
 
 		uint Result = packed11ToFloat(x);
 
@@ -146,12 +146,12 @@ namespace detail
 
 	GLM_FUNC_QUALIFIER glm::uint floatTo10bit(float x)
 	{
-		if(x == 0.0f)
+		if(x <= 0.0f) // 10bit floats have no sign (clamp to 0)
 			return 0u;
 		else if(glm::isnan(x))
-			return ~0u;
-		else if(glm::isinf(x))
-			return 0x1Fu << 5u;
+			return ~0u; // signaling nan
+		else if(glm::isinf(x) || x > 64512.0f) // infinity or bigger than representable value
+			return 0x1Fu << 5u; // infinity
 
 		uint Pack = 0;
 		memcpy(&Pack, &x, sizeof(Pack));
@@ -163,9 +163,9 @@ namespace detail
 		if(x == 0)
 			return 0.0f;
 		else if(x == ((1 << 10) - 1))
-			return ~0;//NaN
+			return std::numeric_limits<float>::signaling_NaN();//NaN
 		else if(x == (0x1f << 5))
-			return ~0;//Inf
+			return std::numeric_limits<float>::infinity();//Inf
 
 		uint Result = packed10ToFloat(x);
 
@@ -607,14 +607,15 @@ namespace detail
 	GLM_FUNC_QUALIFIER vec3 unpackF2x11_1x10(uint32 v)
 	{
 		return vec3(
-			detail::packed11bitToFloat(v >> 0),
-			detail::packed11bitToFloat(v >> 11),
-			detail::packed10bitToFloat(v >> 22));
+			detail::packed11bitToFloat((v >>  0) & ((1 << 11) - 1)),
+			detail::packed11bitToFloat((v >> 11) & ((1 << 11) - 1)),
+			detail::packed10bitToFloat((v >> 22) & ((1 << 10) - 1)));
 	}
 
 	GLM_FUNC_QUALIFIER uint32 packF3x9_E1x5(vec3 const& v)
 	{
-		float const SharedExpMax = (pow(2.0f, 9.0f - 1.0f) / pow(2.0f, 9.0f)) * pow(2.0f, 31.f - 15.f);
+		//float const SharedExpMax = ((pow(2.0f, 9.0f) - 1.0f) / pow(2.0f, 9.0f)) * pow(2.0f, 31.f - 15.f);
+		float const SharedExpMax = 65408.0f;
 		vec3 const Color = clamp(v, 0.0f, SharedExpMax);
 		float const MaxColor = max(Color.x, max(Color.y, Color.z));
 
