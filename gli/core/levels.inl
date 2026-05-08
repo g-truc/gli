@@ -1,5 +1,7 @@
 #include <glm/gtc/integer.hpp>
+#ifndef GLM_ENABLE_EXPERIMENTAL
 #define GLM_ENABLE_EXPERIMENTAL
+#endif
 #include <glm/gtx/component_wise.hpp>
 
 namespace gli
